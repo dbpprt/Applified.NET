@@ -15,7 +15,7 @@ namespace Applified.Core.Services
         public override void RegisterDependencies(IUnityContainer container)
         {
             container
-                .RegisterType<IDbContext, EntityContext>(new HierarchicalLifetimeManager())
+                .RegisterType<IDbContext, EntityContext>(new ExternallyControlledLifetimeManager())
                 .RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager())
 
                 .RegisterType<IRepository<Application>, Repository<Application>>(new HierarchicalLifetimeManager())

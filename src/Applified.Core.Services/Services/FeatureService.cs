@@ -193,11 +193,52 @@ namespace Applified.Core.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory)
+        public async Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory)
         {
-            var catalog = new DirectoryCatalog(baseDirectory, "*.IntegratedFeature.*");
+            var catalog = new DirectoryCatalog(baseDirectory, "*.IntegratedFeatures.*.dll");
             var container = new CompositionContainer(catalog);
             container.ComposeParts(this);
+
+            var loadedFeatures = _integratedFeatures.ToList();
+
+            var existingFeatures = await _features.Query()
+                .Where(entity => entity.FeatureType == FeatureType.Integrated)
+                .ToListAsync();
+
+            foreach (var loadedFeature in loadedFeatures)
+            {
+                var existing = existingFeatures.FirstOrDefault(entity => entity.Id == loadedFeature.FeatureId);
+
+                if (existing == null)
+                {
+                    var newFeature = new Feature
+                    {
+                        Author = loadedFeature.Author,
+                        Description = loadedFeature.Description,
+                        FeatureType = FeatureType.Integrated,
+                        Name = loadedFeature.Name,
+                        Id = loadedFeature.FeatureId,
+                        VersionIdentifier = loadedFeature.Version,
+                        StoredObjectId = null,
+                        StoredObject = null
+                    };
+
+                    _features.Insert(newFeature, false);
+                }
+                else
+                {
+                    existing.Author = loadedFeature.Author;
+                    existing.Description = loadedFeature.Description;
+                    existing.Name = loadedFeature.Name;
+                    existing.VersionIdentifier = loadedFeature.Version;
+                    existing.StoredObjectId = null;
+
+                    _features.Update(existing, false);
+                }
+            }
+
+
+            await _context.SaveAsync();
         }
 
         private Task<ConfigurationModel> GetFeatureConfigurationAsync(byte[] zipArchive)

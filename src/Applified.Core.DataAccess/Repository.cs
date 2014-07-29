@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using Applified.Core.DataAccess.Contracts;
@@ -20,7 +21,7 @@ namespace Applified.Core.DataAccess
                 throw new ArgumentNullException("entity");
 
             var keyEntity = entity as IGuidKey;
-            if (keyEntity != null)
+            if (keyEntity != null && keyEntity.Id == Guid.Empty)
             {
                 keyEntity.Id = Guid.NewGuid();
             }
@@ -64,7 +65,7 @@ namespace Applified.Core.DataAccess
         public virtual void Delete(TEntity entity, bool saveChanges = true)
         {
             BeforeDelete(entity);
-            DbSet.Attach(entity);
+            //DbSet.Attach(entity);
             DbSet.Remove(entity);
 
             if (saveChanges)
@@ -77,7 +78,7 @@ namespace Applified.Core.DataAccess
         public virtual TEntity Insert(TEntity entity, bool saveChanges = true)
         {
             BeforeAdd(entity);
-            DbSet.Attach(entity);
+            //DbSet.Attach(entity);
             Context.SetState(entity, EntityState.Added);
 
             if (saveChanges)
@@ -113,7 +114,7 @@ namespace Applified.Core.DataAccess
         public virtual async Task DeleteAsync(TEntity entity, bool saveChanges = true)
         {
             BeforeDelete(entity);
-            DbSet.Attach(entity);
+            //DbSet.Attach(entity);
             DbSet.Remove(entity);
 
             if (saveChanges)
@@ -126,7 +127,7 @@ namespace Applified.Core.DataAccess
         public virtual async Task<TEntity> InsertAsync(TEntity entity, bool saveChanges = true)
         {
             BeforeAdd(entity);
-            DbSet.Attach(entity);
+            //DbSet.Attach(entity);
             Context.SetState(entity, EntityState.Added);
 
             if (saveChanges)

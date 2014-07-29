@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationModel.cs" />
     <Compile Include="Contracts\AbstractNotificationSubscriber.cs" />
+    <Compile Include="Contracts\IApplicationEventHandler.cs" />
     <Compile Include="Contracts\IDynamicRewriteRule.cs" />
     <Compile Include="Contracts\INotificationSubscriber.cs" />
     <Compile Include="Contracts\IPostApplicationCreationStep.cs" />

@@ -1,5 +1,7 @@
 ﻿using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
+using Applified.Core.Extensibility.Contracts;
+using Applified.Core.Handlers;
 using Applified.Core.ServiceContracts;
 using Applified.Core.Services;
 using Applified.Core.Services.Services;
@@ -19,9 +21,14 @@ namespace Applified.Core
                     new HierarchicalLifetimeManager())
 
                 .RegisterType<IUrlBuilderService, UrlBuilderService>(new HierarchicalLifetimeManager())
-
                 .RegisterType<IStorageService, DatabaseStorageService>(new HierarchicalLifetimeManager())
-                .RegisterType<IDeploymentService, DeploymentService>(new HierarchicalLifetimeManager());
+                .RegisterType<IDeploymentService, DeploymentService>(new HierarchicalLifetimeManager())
+                .RegisterType<IFeatureService, FeatureService>(new HierarchicalLifetimeManager())
+                
+                
+                .RegisterType<IApplicationEventHandler, FeatureSynchronizationHandler>(
+                    "FeatureSynchronizationHandler", 
+                    new HierarchicalLifetimeManager());
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Web.Http;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.Identity;
 using Applified.Core.Middleware;
+using Applified.Core.ServiceContracts;
+using Microsoft.Owin.Diagnostics;
 using Microsoft.Owin.Extensions;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Serialization;
@@ -16,6 +19,17 @@ namespace Applified.Core
     {
         public static void Build(IAppBuilder app)
         {
+            app.UseErrorPage(new ErrorPageOptions
+            {
+                ShowCookies = true,
+                ShowEnvironment = true,
+                ShowExceptionDetails = true,
+                ShowHeaders = true,
+                ShowQuery = true,
+                ShowSourceCode = true,
+                SourceCodeLineCount = 20
+            });
+
             var container = new UnityContainer()
                 .RegisterModule<MainUnityModule>()
                 .RegisterModule<IdentityUnityModule>();
@@ -24,21 +38,10 @@ namespace Applified.Core
 
             IdentityBuilder.Build(app);
 
-            app.Use<ConsoleLoggerMiddleware>();
-            
-            //app.UseErrorPage(new ErrorPageOptions
-            //{
-            //    ShowCookies = true,
-            //    ShowEnvironment = true,
-            //    ShowExceptionDetails = true,
-            //    ShowHeaders = true,
-            //    ShowQuery = true,
-            //    ShowSourceCode = true,
-            //    SourceCodeLineCount = 10
-            //});
-
             app.UseStageMarker(PipelineStage.MapHandler);
 
+            app.Use<ApplicationEventMiddleware>(container);
+            
             app.Use<DeploymentHandler>();
 
             //app.Use<ManagementMiddleware>();
@@ -47,11 +50,11 @@ namespace Applified.Core
 
             app.Use<SimpleUrlRoutingMiddleware>(StaticRouteConfiguration());
 
-            app.UseWebApi(
-                app.PrepareWebapiAdapter(ApiHttpConfiguration())
-                );
+            //app.UseWebApi(
+            //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
+            //    );
 
-            app.Use<MultiTenantFileServer>(null, "C:\\Deployments");
+            //app.Use<MultiTenantFileServer>(null, "C:\\Deployments");
         }
 
 
