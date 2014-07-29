@@ -14,17 +14,13 @@ namespace Applified.Core.Extensibility
     {
         public abstract Guid FeatureId { get; }
 
-        public Dictionary<string, string> GlobalSettings { get; protected set; } 
-
         protected FeatureBase(OwinMiddleware next) 
             : base(next)
         {
-            GlobalSettings = new Dictionary<string, string>();
         }
 
         protected FeatureBase() : base(new NoopMiddleware())
         {
-            GlobalSettings = new Dictionary<string, string>();
         }
 
         public virtual void RegisterDependencies(IUnityContainer container) { }

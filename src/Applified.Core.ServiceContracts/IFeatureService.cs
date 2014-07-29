@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Applified.Core.Entities.Infrastructure;
+using Applified.Core.Extensibility;
 
 namespace Applified.Core.ServiceContracts
 {
@@ -36,5 +37,9 @@ namespace Applified.Core.ServiceContracts
         Task<Feature> AddFeatureFromZipAsync(byte[] zipArchive);
 
         Task UpdateFeatureFromZipAsync(byte[] zipArchive);
+
+        Task<List<FeatureBase>> GetFeatureInstancesAsync();
+
+        Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory);
     }
 }

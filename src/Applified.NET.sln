@@ -37,6 +37,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Hosting.SelfHost"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Core.Extensibility", "Applified.Core.Extensibility\Applified.Core.Extensibility.csproj", "{FE034BC2-887D-4F08-9DB8-A556BF370FA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Common.Exceptions", "Applified.Common.Exceptions\Applified.Common.Exceptions.csproj", "{B0B34444-61CF-41A4-BB53-860F50FC14AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrated Features", "Integrated Features", "{ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.IntegratedFeatures.ConsoleLogger", "Applified.IntegratedFeatures.ConsoleLogger\Applified.IntegratedFeatures.ConsoleLogger.csproj", "{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +101,14 @@ Global
 		{FE034BC2-887D-4F08-9DB8-A556BF370FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE034BC2-887D-4F08-9DB8-A556BF370FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE034BC2-887D-4F08-9DB8-A556BF370FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0B34444-61CF-41A4-BB53-860F50FC14AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B34444-61CF-41A4-BB53-860F50FC14AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B34444-61CF-41A4-BB53-860F50FC14AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B34444-61CF-41A4-BB53-860F50FC14AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,5 +127,7 @@ Global
 		{36FFD1DF-BDE5-4777-ABA1-C6EB94B210F1} = {36A165EA-EA1D-4DB0-9FF2-86AD5DA29667}
 		{D2C9DB4C-0CE0-4E87-8B4D-670CDDEAF0C7} = {36A165EA-EA1D-4DB0-9FF2-86AD5DA29667}
 		{FE034BC2-887D-4F08-9DB8-A556BF370FA6} = {7F8CE3F9-5F45-43F0-A09B-2FF142D6F555}
+		{B0B34444-61CF-41A4-BB53-860F50FC14AA} = {77E01F60-AD92-4725-A0AF-3ED866DEFFA9}
+		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
 	EndGlobalSection
 EndGlobal

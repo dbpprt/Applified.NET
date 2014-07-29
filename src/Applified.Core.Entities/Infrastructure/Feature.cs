@@ -23,8 +23,9 @@ namespace Applified.Core.Entities.Infrastructure
         [Required]
         public string Author { get; set; }
 
-        [Required]
-        public Guid StoredObjectId { get; set; }
+        public FeatureType FeatureType { get; set; }
+
+        public Guid? StoredObjectId { get; set; }
 
         [ForeignKey("StoredObjectId")]
         public StoredObject StoredObject { get; set; }

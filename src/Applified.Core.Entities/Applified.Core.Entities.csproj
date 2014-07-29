@@ -64,6 +64,7 @@
     <Compile Include="Infrastructure\Application.cs" />
     <Compile Include="Infrastructure\ApplicationTemplate.cs" />
     <Compile Include="Infrastructure\Binding.cs" />
+    <Compile Include="Infrastructure\FeatureType.cs" />
     <Compile Include="Infrastructure\Deployment.cs" />
     <Compile Include="Infrastructure\Feature.cs" />
     <Compile Include="Infrastructure\FeatureApplicationMapping.cs" />
