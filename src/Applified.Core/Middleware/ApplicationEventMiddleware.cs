@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Http.Dependencies;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility.Contracts;
 using Microsoft.Owin;
@@ -16,12 +17,13 @@ namespace Applified.Core.Middleware
     {
         private readonly IUnityContainer _container;
         private static int _executionCount = 0;
-        private static readonly object ExecutionLock = new object();
+        private static SemaphoreSlim _executionLock;
 
         public ApplicationEventMiddleware(OwinMiddleware next, IUnityContainer container)
             : base(next)
         {
             _container = container;
+            _executionLock = new SemaphoreSlim(1);
         }
 
         internal static CancellationToken GetShutdownToken(IDictionary<string, object> env)
@@ -35,6 +37,10 @@ namespace Applified.Core.Middleware
 
         // TODO: Register Application shutdown events!
 
+
+        // this method looks a bit ugly at the moment..
+        // but this solution seems to be a good way to make this threadsafe
+        // it ensures that all handlers are called before the first request gets processed
         public override async Task Invoke(IOwinContext context)
         {
             if (_executionCount > 0)
@@ -52,14 +58,40 @@ namespace Applified.Core.Middleware
                 return;
             }
 
-            lock (ExecutionLock)
+            if (_executionCount == 0)
             {
-                if (_executionCount == 0)
+                await _executionLock.WaitAsync();
                 {
-                    handlers.ForEach(async handler => await handler.OnStartup(_container, scope).ConfigureAwait(false));
-                }
+                    if (_executionCount == 0)
+                    {
+                        try
+                        {
 
-                _executionCount++;
+                            foreach (var applicationEventHandler in handlers)
+                            {
+                                try
+                                {
+                                    await applicationEventHandler.OnStartup(_container, scope);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // TODO: implement a logging mechanism
+
+                                    throw;
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            _executionCount++;
+                            _executionLock.Release();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                await Next.Invoke(context);
             }
         }
     }

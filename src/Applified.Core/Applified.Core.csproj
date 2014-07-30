@@ -102,7 +102,6 @@
     <Compile Include="Handlers\FeatureSynchronizationHandler.cs" />
     <Compile Include="MainUnityModule.cs" />
     <Compile Include="Middleware\ApplicationEventMiddleware.cs" />
-    <Compile Include="Middleware\ConsoleLogger.cs" />
     <Compile Include="Middleware\DeploymentHandler.cs" />
     <Compile Include="Middleware\MultiTenantFileServer.cs" />
     <Compile Include="Middleware\SimpleUrlRoutingMiddleware.cs" />

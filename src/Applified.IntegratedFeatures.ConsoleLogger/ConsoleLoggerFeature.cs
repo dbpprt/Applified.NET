@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Applified.Core.Extensibility;
 using Microsoft.Owin;
@@ -12,7 +13,19 @@ namespace Applified.IntegratedFeatures.ConsoleLogger
     {
         public override Task Invoke(IOwinContext context)
         {
-            return Next.Invoke(context);
+            var path = context.Request.Path;
+
+            var stopWatch = Stopwatch.StartNew();
+            return Next.Invoke(context).ContinueWith(t =>
+            {
+                Console.WriteLine("{0} - {1} in {2}ms with response {3} {4}",
+                    context.Request.Method,
+                    path,
+                    stopWatch.ElapsedMilliseconds,
+                    context.Response.StatusCode,
+                    string.IsNullOrEmpty(context.Response.ReasonPhrase) ? "" : " - " + context.Response.ReasonPhrase);
+                return t;
+            });
         }
 
         public override Guid FeatureId
@@ -36,7 +49,7 @@ namespace Applified.IntegratedFeatures.ConsoleLogger
 
         public override string Version
         {
-            get { return "0.0.1-alpha-1"; }
+            get { return "0.0.1-alpha-2"; }
         }
 
         public override string Author
