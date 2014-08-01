@@ -1,44 +1,37 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Applified.Core.Extensibility;
 using Microsoft.Owin;
 using Owin;
 
-namespace Applified.IntegratedFeatures.ConsoleLogger
+namespace Applified.IntegratedFeatures.StaticFileHandler
 {
-
     [Export(typeof(IntegratedFeatureBase))]
-    public class ConsoleLoggerFeature : IntegratedFeatureBase
+    public class StaticFileHandlerFeature : IntegratedFeatureBase
     {
         public override Guid FeatureId
         {
-            get { return new Guid("31EF6DF6-978C-4001-9E93-56C183776BF7"); }
+            get { return new Guid("31EF6DF6-978C-4001-9E93-56C183772AF7"); }
         }
 
         public override int ExecutionOrderKey
         {
-            get { return int.MaxValue; }
+            get { return 1000; }
         }
 
         public override OwinMiddleware GetTenantMiddleware(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder)
         {
-            return new ConsoleLoggerMiddleware(next);
+            return null;
         }
 
         public override string Name
         {
-            get { return "console-request-logger"; }
+            get { return "static-file-handler"; }
         }
 
         public override string Description
         {
-            get
-            {
-                return
-                    "Logs all request to the standard console output stream. Good for SelfHost console application and debugging purposes";
-            }
+            get { return "Provider for static files like images, html, js, etc files"; }
         }
 
         public override string Version

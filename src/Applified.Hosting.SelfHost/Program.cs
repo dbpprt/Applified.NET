@@ -7,7 +7,7 @@ namespace Applified.Hosting.SelfHost
 {
     class Program
     {
-        private const string ListenOn = "http://*:8080";
+        private const string ListenOn = "http://+:8080/";
         static void Main(string[] args)
         {
             try

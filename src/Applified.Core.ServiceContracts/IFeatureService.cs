@@ -40,7 +40,7 @@ namespace Applified.Core.ServiceContracts
 
         Task UpdateFeatureFromZipAsync(byte[] zipArchive);
 
-        List<FeatureBase> GetFeatureInstancesAsync();
+        Task<List<FeatureBase>> GetFeatureInstancesAsync();
 
         Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory);
     }

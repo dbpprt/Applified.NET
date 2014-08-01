@@ -32,10 +32,10 @@ namespace Applified.Core.Identity
         public override async Task Invoke(IOwinContext context)
         {
             var scope = context.GetRequestContainer();
-            var current = scope.Resolve<ICurrentApplication>();
+            var current = scope.Resolve<ICurrentContext>();
 
             OwinMiddleware pipe;
-            if (_tenantAuthenticationPipe.TryGetValue(current.Application.Id, out pipe))
+            if (_tenantAuthenticationPipe.TryGetValue(current.ApplicationId, out pipe))
             {
                 await pipe.Invoke(context);
                 return;
@@ -61,12 +61,12 @@ namespace Applified.Core.Identity
 
             if (lastMiddleware != null)
             {
-                SetPipe(current.Application.Id, lastMiddleware);
+                SetPipe(current.ApplicationId, lastMiddleware);
                 await lastMiddleware.Invoke(context);
             }
             else
             {
-                SetPipe(current.Application.Id, Next);
+                SetPipe(current.ApplicationId, Next);
                 await Next.Invoke(context);
             }
         }

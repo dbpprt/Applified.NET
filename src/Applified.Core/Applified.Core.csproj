@@ -151,6 +151,14 @@
       <Project>{3500D4C7-6C17-4D8F-91FE-B885E9D724DC}</Project>
       <Name>Applified.Core.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Applified.IntegratedFeatures.ConsoleLogger\Applified.IntegratedFeatures.ConsoleLogger.csproj">
+      <Project>{2b1fcdc1-49c9-40a5-8d84-c134772e1d1c}</Project>
+      <Name>Applified.IntegratedFeatures.ConsoleLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.IntegratedFeatures.StaticFileHandler\Applified.IntegratedFeatures.StaticFileHandler.csproj">
+      <Project>{c031284a-739d-4bb8-9db5-5647e4089e4f}</Project>
+      <Name>Applified.IntegratedFeatures.StaticFileHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

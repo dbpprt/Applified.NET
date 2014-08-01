@@ -14,27 +14,27 @@ namespace Applified.Core.Services.Services
         private readonly IRepository<Deployment> _deployments;
         private readonly IRepository<Application> _applications;
         private readonly IStorageService _storageService;
-        private readonly ICurrentApplication _currentApplication;
+        private readonly ICurrentContext _currentContext;
         private readonly INativeRepository<Deployment> _nativeDeployments;
 
         public DeploymentService(
             IRepository<Deployment> deployments,
             IRepository<Application> applications,
             IStorageService storageService,
-            ICurrentApplication currentApplication,
+            ICurrentContext currentContext,
             INativeRepository<Deployment> nativeDeployments 
             )
         {
             _deployments = deployments;
             _applications = applications;
             _storageService = storageService;
-            _currentApplication = currentApplication;
+            _currentContext = currentContext;
             _nativeDeployments = nativeDeployments;
         }
 
         private void EnsureAccess()
         {
-            if (!_currentApplication.IsAdmin)
+            if (!_currentContext.IsAdmin)
             {
                 throw new UnauthorizedAccessException();
             }   
@@ -46,26 +46,26 @@ namespace Applified.Core.Services.Services
 
             return _deployments.Query()
                 .Include(entity => entity.Application)
-                .Where(deployment => deployment.ApplicationId == _currentApplication.Application.Id);
+                .Where(deployment => deployment.ApplicationId == _currentContext.ApplicationId);
         }
 
         public async Task<Guid> AddDeploymentAsync(StoredObject storedObject, Deployment deployment, bool setActive = false)
         {
             EnsureAccess();
 
-            var currentApplication = _currentApplication.Application;
+            var currentApplicationId = _currentContext.ApplicationId;
             var storedObjectId = await _storageService
                 .StoreObjectAsync(storedObject.Name, storedObject.Data)
                 .ConfigureAwait(false);
 
             deployment.DeploymentId = Guid.NewGuid();
-            deployment.ApplicationId = currentApplication.Id;
+            deployment.ApplicationId = currentApplicationId;
             deployment.StoredObjectId = storedObjectId;
 
             if (setActive)
             {
                 var entity = await _applications.Query()
-                    .FirstAsync(application => application.Id == currentApplication.Id)
+                    .FirstAsync(application => application.Id == currentApplicationId)
                     .ConfigureAwait(false);
 
                 entity.ActiveDeploymentId = deployment.DeploymentId;

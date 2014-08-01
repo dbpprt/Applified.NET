@@ -12,7 +12,7 @@
 //{
 //    class PostRepository : ApplicationDependantRepository<Post>
 //    {
-//        public PostRepository(IDbContext context, ICurrentApplication currentApplication) 
+//        public PostRepository(IDbContext context, ICurrentContext currentApplication) 
 //            : base(context, currentApplication)
 //        {
 

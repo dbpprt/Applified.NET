@@ -27,6 +27,9 @@ namespace Applified.Core.Entities.Infrastructure
 
         public FeatureType FeatureType { get; set; }
 
+        [Required]
+        public int ExecutionOrderKey { get; set; }
+
         public Guid? StoredObjectId { get; set; }
 
         [ForeignKey("StoredObjectId")]

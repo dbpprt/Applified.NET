@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -220,11 +221,19 @@ namespace Applified.Core.Services.Services
             container.ComposeParts(this);
         }
 
-        public List<FeatureBase> GetFeatureInstancesAsync()
+        public async Task<List<FeatureBase>> GetFeatureInstancesAsync()
         {
             LoadIntegratedFeatures();
 
-            return _integratedFeatures.Cast<FeatureBase>().ToList();
+            // TODO: better loading strategy
+            var instances = _integratedFeatures.Cast<FeatureBase>();
+
+            var activeFeatures = await _featureApplicationMappings.Query()
+                .ToListAsync();
+
+            return instances.Where(
+                    instance => activeFeatures.Any(active => active.FeatureId == instance.FeatureId))
+                .ToList();
         }
 
         public async Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory = null)
@@ -251,7 +260,8 @@ namespace Applified.Core.Services.Services
                         Id = loadedFeature.FeatureId,
                         VersionIdentifier = loadedFeature.Version,
                         StoredObjectId = null,
-                        StoredObject = null
+                        StoredObject = null,
+                        ExecutionOrderKey = loadedFeature.ExecutionOrderKey
                     };
 
                     _features.Insert(newFeature, false);
@@ -263,6 +273,7 @@ namespace Applified.Core.Services.Services
                     existing.Name = loadedFeature.Name;
                     existing.VersionIdentifier = loadedFeature.Version;
                     existing.StoredObjectId = null;
+                    existing.ExecutionOrderKey = loadedFeature.ExecutionOrderKey;
 
                     _features.Update(existing, false);
                 }

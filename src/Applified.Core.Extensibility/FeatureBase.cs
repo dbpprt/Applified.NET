@@ -14,6 +14,8 @@ namespace Applified.Core.Extensibility
     {
         public abstract Guid FeatureId { get; }
 
+        public abstract int ExecutionOrderKey { get; }
+
         public virtual void RegisterDependencies(IUnityContainer container) { }
 
         public virtual void OnStartup(IAppBuilder app) { }

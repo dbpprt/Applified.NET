@@ -16,7 +16,7 @@ namespace Applified.Core
             container
                 .RegisterModule<ServiceUnityModule>()
 
-                .RegisterType<ICurrentApplication, MultiTenancyContextHandler>(new HierarchicalLifetimeManager())
+                .RegisterType<ICurrentContext, MultiTenancyContextHandler>(new HierarchicalLifetimeManager())
                 .RegisterType<IDynamicRegistrationDelegate, MultiTenancyContextHandler>("MultiTenancyContextHandler",
                     new HierarchicalLifetimeManager())
 

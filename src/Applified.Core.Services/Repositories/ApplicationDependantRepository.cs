@@ -8,34 +8,34 @@ namespace Applified.Core.Services.Repositories
 {
     public class ApplicationDependantRepository<TEntity> : Repository<TEntity> where TEntity : class, IApplicationDependant
     {
-        private readonly ICurrentApplication _currentApplication;
+        private readonly ICurrentContext _currentContext;
 
         public ApplicationDependantRepository(
             IDbContext context,
-            ICurrentApplication currentApplication
+            ICurrentContext currentContext
             ) 
             : base(context)
         {
-            _currentApplication = currentApplication;
+            _currentContext = currentContext;
         }
 
         public override void BeforeAdd(TEntity entity)
         {
             base.BeforeAdd(entity);
 
-            entity.ApplicationId = _currentApplication.Application.Id;
+            entity.ApplicationId = _currentContext.ApplicationId;
         }
 
         public override void BeforeUpdate(TEntity update)
         {
             base.BeforeUpdate(update);
 
-            update.ApplicationId = _currentApplication.Application.Id;
+            update.ApplicationId = _currentContext.ApplicationId;
         }
 
         public override void BeforeDelete(TEntity entity)
         {
-            entity.ApplicationId = _currentApplication.Application.Id;
+            entity.ApplicationId = _currentContext.ApplicationId;
 
             base.BeforeDelete(entity);
         }
@@ -43,7 +43,7 @@ namespace Applified.Core.Services.Repositories
         public override IQueryable<TEntity> Query()
         {
             return base.Query()
-                .Where(entity => entity.ApplicationId == _currentApplication.Application.Id);
+                .Where(entity => entity.ApplicationId == _currentContext.ApplicationId);
         }
     }
 }

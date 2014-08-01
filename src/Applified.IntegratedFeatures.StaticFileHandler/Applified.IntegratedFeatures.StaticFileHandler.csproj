@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1402041-F0E4-433B-A761-91B40C22405A}</ProjectGuid>
+    <ProjectGuid>{C031284A-739D-4BB8-9DB5-5647E4089E4F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Applified.Core.ServiceContracts</RootNamespace>
-    <AssemblyName>Applified.Core.ServiceContracts</AssemblyName>
+    <RootNamespace>Applified.IntegratedFeatures.StaticFileHandler</RootNamespace>
+    <AssemblyName>Applified.IntegratedFeatures.StaticFileHandler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -37,6 +37,7 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,24 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IApplicationService.cs" />
-    <Compile Include="ICurrentContext.cs" />
-    <Compile Include="IDeploymentService.cs" />
-    <Compile Include="IFeatureService.cs" />
-    <Compile Include="IServerEnvironment.cs" />
-    <Compile Include="IStorageService.cs" />
-    <Compile Include="IUnprotectedContext.cs" />
-    <Compile Include="IUrlBuilderService.cs" />
+    <Compile Include="StaticFileHandlerFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Applified.Common\Applified.Common.csproj">
       <Project>{86884F5C-B482-4986-8FD4-C3086BC0073F}</Project>
       <Name>Applified.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Applified.Core.Entities\Applified.Core.Entities.csproj">
-      <Project>{216E5512-316F-4109-8C32-055B3A7A657B}</Project>
-      <Name>Applified.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Applified.Core.Extensibility\Applified.Core.Extensibility.csproj">
       <Project>{FE034BC2-887D-4F08-9DB8-A556BF370FA6}</Project>
