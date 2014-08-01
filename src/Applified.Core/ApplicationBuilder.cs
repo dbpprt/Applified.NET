@@ -19,6 +19,8 @@ namespace Applified.Core
     {
         public static void Build(IAppBuilder app)
         {
+            app.UseStageMarker(PipelineStage.MapHandler);
+
             app.UseErrorPage(new ErrorPageOptions
             {
                 ShowCookies = true,
@@ -31,30 +33,29 @@ namespace Applified.Core
             });
 
             var container = new UnityContainer()
-                .RegisterModule<MainUnityModule>()
-                .RegisterModule<IdentityUnityModule>();
+                .RegisterModule<MainUnityModule>();
 
             app.UseContainer(new UnityDependencyResolver(container));
 
-            IdentityBuilder.Build(app);
-
-            app.UseStageMarker(PipelineStage.MapHandler);
-
             app.Use<ApplicationEventMiddleware>(container);
-            
-            app.Use<DeploymentHandler>();
+
+            app.Use<ApplicationDeploymentProviderMiddleware>();
+
+            app.Use<TenantFeatureMiddleware>(app);
+
+            app.Use<DeploymentMiddleware>();
 
             //app.Use<ManagementMiddleware>();
 
             //app.Use<MetaWeblogService>();
 
-            app.Use<SimpleUrlRoutingMiddleware>(StaticRouteConfiguration());
+            //app.Use<SimpleUrlRoutingMiddleware>(StaticRouteConfiguration());
 
             //app.UseWebApi(
             //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
             //    );
 
-            //app.Use<MultiTenantFileServer>(null, "C:\\Deployments");
+            //app.Use<MultiTenantFileServerMiddleware>(null, "C:\\Deployments");
         }
 
 
@@ -91,15 +92,6 @@ namespace Applified.Core
             );
 
             return config;
-        }
-
-        internal static CancellationToken GetShutdownToken(IDictionary<string, object> env)
-        {
-            object value;
-            return env.TryGetValue("host.OnAppDisposing", out value)
-                && value is CancellationToken
-                ? (CancellationToken)value
-                : default(CancellationToken);
         }
     }
 }

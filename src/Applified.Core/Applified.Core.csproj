@@ -98,21 +98,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationBuilder.cs" />
-    <Compile Include="FeatureLoader.cs" />
+    <Compile Include="DevelopmentServerEnvironment.cs" />
     <Compile Include="Handlers\FeatureSynchronizationHandler.cs" />
     <Compile Include="MainUnityModule.cs" />
+    <Compile Include="Middleware\ApplicationDeploymentProviderMiddleware.cs" />
     <Compile Include="Middleware\ApplicationEventMiddleware.cs" />
-    <Compile Include="Middleware\DeploymentHandler.cs" />
-    <Compile Include="Middleware\MultiTenantFileServer.cs" />
+    <Compile Include="Middleware\DeploymentMiddleware.cs" />
+    <Compile Include="Middleware\MultiTenantFileServerMiddleware.cs" />
     <Compile Include="Middleware\SimpleUrlRoutingMiddleware.cs" />
+    <Compile Include="Middleware\TenantFeatureMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MultiTenancyProvider.cs" />
+    <Compile Include="Handlers\MultiTenancyContextHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Applified.Common.Exceptions\Applified.Common.Exceptions.csproj">
+      <Project>{B0B34444-61CF-41A4-BB53-860F50FC14AA}</Project>
+      <Name>Applified.Common.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.Common.OwinDependencyInjection\Applified.Common.OwinDependencyInjection.csproj">
       <Project>{3B993BE4-4F21-40A6-ADFF-DA1E650F7EF3}</Project>
       <Name>Applified.Common.OwinDependencyInjection</Name>

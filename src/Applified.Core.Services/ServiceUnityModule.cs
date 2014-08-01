@@ -18,7 +18,7 @@ namespace Applified.Core.Services
                 .RegisterType<IDbContext, EntityContext>(new ExternallyControlledLifetimeManager())
                 .RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager())
 
-                .RegisterType<IRepository<Application>, Repository<Application>>(new HierarchicalLifetimeManager())
+                .RegisterType<IRepository<Application>, ApplicationRepository>(new HierarchicalLifetimeManager())
                 .RegisterType<IRepository<WellKnownApplication>, Repository<WellKnownApplication>>(new HierarchicalLifetimeManager())
                 .RegisterType<IRepository<Feature>, Repository<Feature>>(new HierarchicalLifetimeManager())
                 .RegisterType<IRepository<GlobalFeatureSetting>, Repository<GlobalFeatureSetting>>(new HierarchicalLifetimeManager())

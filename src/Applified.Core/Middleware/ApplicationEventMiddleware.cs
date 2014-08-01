@@ -61,33 +61,33 @@ namespace Applified.Core.Middleware
             if (_executionCount == 0)
             {
                 await _executionLock.WaitAsync();
+
+                if (_executionCount == 0)
                 {
-                    if (_executionCount == 0)
+                    try
                     {
-                        try
+
+                        foreach (var applicationEventHandler in handlers)
                         {
-
-                            foreach (var applicationEventHandler in handlers)
+                            try
                             {
-                                try
-                                {
-                                    await applicationEventHandler.OnStartup(_container, scope);
-                                }
-                                catch (Exception ex)
-                                {
-                                    // TODO: implement a logging mechanism
+                                await applicationEventHandler.OnStartup(_container, scope);
+                            }
+                            catch (Exception ex)
+                            {
+                                // TODO: implement a logging mechanism
 
-                                    throw;
-                                }
+                                throw;
                             }
                         }
-                        finally
-                        {
-                            _executionCount++;
-                            _executionLock.Release();
-                        }
+                    }
+                    finally
+                    {
+                        _executionCount++;
+                        _executionLock.Release();
                     }
                 }
+
             }
             else
             {

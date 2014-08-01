@@ -8,7 +8,7 @@ namespace Applified.Hosting.SelfHost
         static void Main(string[] args)
         {
             using (WebApp.Start(
-                "http://localhost:8080", 
+                "http://*:8080", 
                 ApplicationBuilder.Build))
             {
                 System.Console.ReadLine(); 

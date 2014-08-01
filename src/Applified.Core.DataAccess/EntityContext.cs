@@ -11,6 +11,11 @@ namespace Applified.Core.DataAccess
 {
     public class EntityContext : DbContext, IDbContext
     {
+        static EntityContext()
+        {
+            Database.SetInitializer(new NullDatabaseInitializer<EntityContext>());
+        }
+
         public DbSet<StoredObject> StoredObjects { get; set; }
 
         public DbSet<Application> Applications { get; set; }
@@ -56,6 +61,7 @@ namespace Applified.Core.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Conventions.Add(new DateTime2Convention());
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }

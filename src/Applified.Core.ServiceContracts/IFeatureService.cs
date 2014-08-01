@@ -10,6 +10,8 @@ namespace Applified.Core.ServiceContracts
 {
     public interface IFeatureService
     {
+        Task<Feature> FindFeature(string nameOrGuid);
+
         Task<List<Feature>> GetFeaturesAsync();
 
         Task<Feature> GetFeatureAsync(Guid featureId);
@@ -38,7 +40,7 @@ namespace Applified.Core.ServiceContracts
 
         Task UpdateFeatureFromZipAsync(byte[] zipArchive);
 
-        Task<List<FeatureBase>> GetFeatureInstancesAsync();
+        List<FeatureBase> GetFeatureInstancesAsync();
 
         Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory);
     }

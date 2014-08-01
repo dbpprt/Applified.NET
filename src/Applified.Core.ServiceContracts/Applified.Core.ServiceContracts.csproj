@@ -45,9 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IApplicationService.cs" />
     <Compile Include="ICurrentApplication.cs" />
     <Compile Include="IDeploymentService.cs" />
     <Compile Include="IFeatureService.cs" />
+    <Compile Include="IServerEnvironment.cs" />
     <Compile Include="IStorageService.cs" />
     <Compile Include="IUnprotectedContext.cs" />
     <Compile Include="IUrlBuilderService.cs" />

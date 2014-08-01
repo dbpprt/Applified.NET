@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Applified.Common.Exceptions;
 using Applified.Core.DataAccess.Contracts;
@@ -25,11 +26,16 @@ namespace Applified.Core.Services.Services
         private readonly IRepository<GlobalFeatureSetting> _globalFeatureSettings;
         private readonly IRepository<ApplicationFeatureSetting> _applicationFeatureSettings;
         private readonly IStorageService _storageService;
+        private readonly IServerEnvironment _serverEnvironment;
         private readonly IUnitOfWork _context;
 
         [ImportMany(typeof(IntegratedFeatureBase))]
         private IntegratedFeatureBase[] _integratedFeatures = null;
 
+        private static List<IntegratedFeatureBase> IntegratedFeatures = null;
+        private static SemaphoreSlim IntegratedFeatureLock = new SemaphoreSlim(1);
+
+            
         [ImportMany(typeof(FeatureBase))]
         private FeatureBase[] _thirdPartyFeatures = null;
 
@@ -39,6 +45,7 @@ namespace Applified.Core.Services.Services
             IRepository<GlobalFeatureSetting> globalFeatureSettings,
             IRepository<ApplicationFeatureSetting> applicationFeatureSettings,
             IStorageService storageService,
+            IServerEnvironment serverEnvironment,
             IUnitOfWork context
             )
         {
@@ -47,7 +54,21 @@ namespace Applified.Core.Services.Services
             _globalFeatureSettings = globalFeatureSettings;
             _applicationFeatureSettings = applicationFeatureSettings;
             _storageService = storageService;
+            _serverEnvironment = serverEnvironment;
             _context = context;
+        }
+
+        public Task<Feature> FindFeature(string nameOrGuid)
+        {
+            Guid featureId;
+
+            if (Guid.TryParse(nameOrGuid, out featureId))
+            {
+                return GetFeatureAsync(featureId);
+            }
+
+            return _features.Query()
+                .FirstOrDefaultAsync(entity => entity.Name == nameOrGuid);
         }
 
         public Task<List<Feature>> GetFeaturesAsync()
@@ -162,6 +183,7 @@ namespace Applified.Core.Services.Services
 
         public async Task DeleteApplicationFeatureAsync(Guid featureId)
         {
+
             var existing = await _featureApplicationMappings.Query()
                 .FirstOrDefaultAsync(entity => entity.FeatureId == featureId);
 
@@ -188,17 +210,26 @@ namespace Applified.Core.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<FeatureBase>> GetFeatureInstancesAsync()
+        private void LoadIntegratedFeatures(string directory = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory)
-        {
+            if (string.IsNullOrEmpty(directory))
+                directory = _serverEnvironment.ApplicationBaseDirectory;
+            var baseDirectory = directory;
             var catalog = new DirectoryCatalog(baseDirectory, "*.IntegratedFeatures.*.dll");
             var container = new CompositionContainer(catalog);
             container.ComposeParts(this);
+        }
 
+        public List<FeatureBase> GetFeatureInstancesAsync()
+        {
+            LoadIntegratedFeatures();
+
+            return _integratedFeatures.Cast<FeatureBase>().ToList();
+        }
+
+        public async Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory = null)
+        {
+            LoadIntegratedFeatures(baseDirectory);
             var loadedFeatures = _integratedFeatures.ToList();
 
             var existingFeatures = await _features.Query()

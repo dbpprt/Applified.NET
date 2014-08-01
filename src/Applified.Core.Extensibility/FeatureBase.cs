@@ -10,23 +10,19 @@ using Owin;
 
 namespace Applified.Core.Extensibility
 {
-    public abstract class FeatureBase : OwinMiddleware, IUnityModule
+    public abstract class FeatureBase : IUnityModule
     {
         public abstract Guid FeatureId { get; }
-
-        protected FeatureBase(OwinMiddleware next) 
-            : base(next)
-        {
-        }
-
-        protected FeatureBase() : base(new NoopMiddleware())
-        {
-        }
 
         public virtual void RegisterDependencies(IUnityContainer container) { }
 
         public virtual void OnStartup(IAppBuilder app) { }
 
         public virtual void OnShutdown() { }
+
+        public abstract OwinMiddleware GetTenantMiddleware(
+            Guid applicationId, 
+            OwinMiddleware next,
+            IAppBuilder appBuilder);
     }
 }
