@@ -39,11 +39,12 @@ namespace Applified.Core
 
             app.Use<ApplicationEventMiddleware>(container);
 
+            app.Use<DeploymentMiddleware>();
+
             app.Use<ApplicationDeploymentProviderMiddleware>();
 
             app.Use<TenantFeatureMiddleware>(app);
 
-            app.Use<DeploymentMiddleware>();
 
             //app.Use<ManagementMiddleware>();
 

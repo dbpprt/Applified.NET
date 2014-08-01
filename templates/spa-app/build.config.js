@@ -1,4 +1,4 @@
-exports.authorizationToken = "{A5EC5876-3C7E-4A6F-A77E-EDDB416C4437}";
+exports.authorizationToken = "pRS4fpKTNRTMIEuyN4qX6mTEcpjC5VXJr7d9UsUxciXZog2WUU9z2KnMEEBiQAHdpIvQTNQbv8x60SdRqWNf992DHDvC0DzThQRK6qKXhjMwiqMzLxB9cJCfqu1CAAIm";
 //exports.authorizationToken = "{871B8E52-63FC-40CD-9392-066AD9219C03}";
 exports.applicationEndpoint = "http://localhost:8080/api/deploy";
 exports.outputFolder = "build";
@@ -47,4 +47,3 @@ exports.deployRequestOptions = {
         'AccessToken': this.authorizationToken
     }
 };
-

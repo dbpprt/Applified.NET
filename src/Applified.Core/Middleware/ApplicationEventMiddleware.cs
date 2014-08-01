@@ -88,6 +88,7 @@ namespace Applified.Core.Middleware
                     }
                 }
 
+                await Next.Invoke(context);
             }
             else
             {
