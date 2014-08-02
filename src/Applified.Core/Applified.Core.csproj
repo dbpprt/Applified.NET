@@ -104,7 +104,7 @@
     <Compile Include="Middleware\ApplicationDeploymentProviderMiddleware.cs" />
     <Compile Include="Middleware\ApplicationEventMiddleware.cs" />
     <Compile Include="Middleware\DeploymentMiddleware.cs" />
-    <Compile Include="Middleware\MultiTenantFileServerMiddleware.cs" />
+    <Compile Include="Middleware\DynamicUrlRewrite.cs" />
     <Compile Include="Middleware\SimpleUrlRoutingMiddleware.cs" />
     <Compile Include="Middleware\TenantFeatureMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

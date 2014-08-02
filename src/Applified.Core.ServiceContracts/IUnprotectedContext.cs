@@ -5,8 +5,13 @@ namespace Applified.Core.ServiceContracts
 {
     public interface IUnprotectedContext
     {
-        void SetDeploymentToServe(Guid? guid);
-        void SetIsAdmin(bool isAdmin);
-        void SetCurrentApplication(Application application);
+        bool IsAdmin { get; set; }
+
+        Guid ApplicationId { get; set; }
+
+        Guid? DeploymentId { get; set; }
+
+        string BaseDirectory { get; set; }
+
     }
 }

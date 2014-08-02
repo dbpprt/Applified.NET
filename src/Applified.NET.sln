@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Utilities.ApplifiedAdmin", "Applified.Utilities.ApplifiedAdmin\Applified.Utilities.ApplifiedAdmin.csproj", "{EE671CB6-10FF-4AB0-BFE8-00D209015577}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.IntegratedFeatures.AngularHtml5NavigationRewrite", "Applified.IntegratedFeatures.AngularHtml5NavigationRewrite\Applified.IntegratedFeatures.AngularHtml5NavigationRewrite.csproj", "{FA3221D3-B814-4D10-9790-0D58C9C4D4C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.IntegratedFeatures.PageOfDeath", "Applified.IntegratedFeatures.PageOfDeath\Applified.IntegratedFeatures.PageOfDeath.csproj", "{3A440B69-7C6F-4A11-9849-DC661DC83500}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,14 @@ Global
 		{EE671CB6-10FF-4AB0-BFE8-00D209015577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE671CB6-10FF-4AB0-BFE8-00D209015577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE671CB6-10FF-4AB0-BFE8-00D209015577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3221D3-B814-4D10-9790-0D58C9C4D4C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3221D3-B814-4D10-9790-0D58C9C4D4C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3221D3-B814-4D10-9790-0D58C9C4D4C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3221D3-B814-4D10-9790-0D58C9C4D4C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A440B69-7C6F-4A11-9849-DC661DC83500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A440B69-7C6F-4A11-9849-DC661DC83500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A440B69-7C6F-4A11-9849-DC661DC83500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A440B69-7C6F-4A11-9849-DC661DC83500}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +157,7 @@ Global
 		{2B1FCDC1-49C9-40A5-8D84-C134772E1D1C} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
 		{C031284A-739D-4BB8-9DB5-5647E4089E4F} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
 		{EE671CB6-10FF-4AB0-BFE8-00D209015577} = {9AE7CA5F-3EC3-4D3C-92B4-1B3A66C01A97}
+		{FA3221D3-B814-4D10-9790-0D58C9C4D4C4} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
+		{3A440B69-7C6F-4A11-9849-DC661DC83500} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
 	EndGlobalSection
 EndGlobal

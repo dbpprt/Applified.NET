@@ -21,12 +21,11 @@ namespace Applified.Utilities.ApplifiedAdmin.Commands
 
         public override async Task<int> Execute()
         {
-            Application application;
             using (var scope = Container.CreateChildContainer())
             {
                 var applicationService = scope.Resolve<IApplicationService>();
 
-                application = await applicationService.FindApplication(Options.TargetApplication);
+                var application = await applicationService.FindApplication(Options.TargetApplication);
                 if (application == null)
                 {
                     Console.WriteLine("Application not found");

@@ -43,7 +43,7 @@ namespace Applified.Core.Middleware
             var registeredFeatures = await featureService.GetFeatureInstancesAsync();
 
             registeredFeatures = registeredFeatures
-                .OrderBy(feature => feature.ExecutionOrderKey)
+                .OrderByDescending(feature => feature.ExecutionOrderKey)
                 .ToList();
 
             var count = registeredFeatures.Count;
@@ -53,10 +53,11 @@ namespace Applified.Core.Middleware
             {
                 var provider = registeredFeatures[i];
 
-                var currentMiddleware = provider.GetTenantMiddleware(
+                var currentMiddleware = await provider.UseAsync(
                     current.ApplicationId,
                     lastMiddleware,
-                    _appBuilder
+                    _appBuilder,
+                    scope
                     );
 
                 if (currentMiddleware != null || lastMiddleware == null)

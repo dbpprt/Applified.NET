@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.Entities.Identity;
@@ -29,9 +30,11 @@ namespace Applified.Core.Identity
 
         private class DynamicOwinAuthenticationManagerRegistration : IDynamicRegistrationDelegate
         {
-            public void InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context)
+            public Task InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context)
             {
                 provider.GetUnderlayingContainer().RegisterInstance(context.Authentication, new HierarchicalLifetimeManager());
+
+                return Task.FromResult(0);
             }
         }
     }

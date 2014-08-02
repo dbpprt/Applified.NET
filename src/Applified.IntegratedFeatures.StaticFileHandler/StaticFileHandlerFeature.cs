@@ -1,7 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using System.Web.Http.Dependencies;
+using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility;
+using Applified.Core.ServiceContracts;
 using Microsoft.Owin;
+using Microsoft.Owin.StaticFiles;
 using Owin;
 
 namespace Applified.IntegratedFeatures.StaticFileHandler
@@ -16,12 +21,20 @@ namespace Applified.IntegratedFeatures.StaticFileHandler
 
         public override int ExecutionOrderKey
         {
-            get { return 1000; }
+            // execute as last middleware because it sends 404 if it dont find a file
+            get { return 0; }
         }
 
-        public override OwinMiddleware GetTenantMiddleware(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder)
+        public override async Task<OwinMiddleware> UseAsync(
+            Guid applicationId, 
+            OwinMiddleware next, 
+            IAppBuilder builder,
+            IDependencyScope scope)
         {
-            return null;
+            var featureService = scope.Resolve<IFeatureService>();
+            var settings = await featureService.GetSettingsAsync(FeatureId);
+
+            return new FileHandlerMiddleware(next, scope, new Settings(settings));
         }
 
         public override string Name

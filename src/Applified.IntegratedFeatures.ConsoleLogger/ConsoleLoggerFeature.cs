@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Web.Http.Dependencies;
 using Applified.Core.Extensibility;
 using Microsoft.Owin;
 using Owin;
@@ -22,9 +23,9 @@ namespace Applified.IntegratedFeatures.ConsoleLogger
             get { return int.MaxValue; }
         }
 
-        public override OwinMiddleware GetTenantMiddleware(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder)
+        public override Task<OwinMiddleware> UseAsync(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder, IDependencyScope scope)
         {
-            return new ConsoleLoggerMiddleware(next);
+            return Task.FromResult(new ConsoleLoggerMiddleware(next) as OwinMiddleware);
         }
 
         public override string Name

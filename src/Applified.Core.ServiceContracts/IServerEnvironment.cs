@@ -15,6 +15,6 @@ namespace Applified.Core.ServiceContracts
 
         string FeatureDirectory { get; }
 
-
+        string GetDeploymentDirectory(Guid deploymentId);
     }
 }

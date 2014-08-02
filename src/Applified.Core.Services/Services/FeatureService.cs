@@ -283,6 +283,19 @@ namespace Applified.Core.Services.Services
             await _context.SaveAsync();
         }
 
+        public async Task<Dictionary<string, string>> GetSettingsAsync(Guid featureId)
+        {
+            var globalSettings = await GetGlobalFeatureSettingsAsync(featureId);
+            var applicationSettings = await GetApplicationFeatureSettingsAsync(featureId);
+
+            foreach (var globalSetting in globalSettings.Where(globalSetting => !applicationSettings.ContainsKey(globalSetting.Key)))
+            {
+                applicationSettings.Add(globalSetting.Key, globalSetting.Value);
+            }
+
+            return applicationSettings;
+        }
+
         private Task<ConfigurationModel> GetFeatureConfigurationAsync(byte[] zipArchive)
         {
             using (var stream = new MemoryStream(zipArchive))

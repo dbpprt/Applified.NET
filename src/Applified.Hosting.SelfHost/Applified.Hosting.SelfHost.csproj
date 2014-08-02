@@ -87,6 +87,10 @@
       <Project>{554F6529-22EC-403B-B800-4743BC5F001F}</Project>
       <Name>Applified.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Applified.IntegratedFeatures.AngularHtml5NavigationRewrite\Applified.IntegratedFeatures.AngularHtml5NavigationRewrite.csproj">
+      <Project>{fa3221d3-b814-4d10-9790-0d58c9c4d4c4}</Project>
+      <Name>Applified.IntegratedFeatures.AngularHtml5NavigationRewrite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.IntegratedFeatures.ConsoleLogger\Applified.IntegratedFeatures.ConsoleLogger.csproj">
       <Project>{2b1fcdc1-49c9-40a5-8d84-c134772e1d1c}</Project>
       <Name>Applified.IntegratedFeatures.ConsoleLogger</Name>

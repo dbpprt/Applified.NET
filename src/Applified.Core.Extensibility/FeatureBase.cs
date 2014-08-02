@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http.Dependencies;
 using Applified.Common;
 using Applified.Common.Unity;
 using Microsoft.Owin;
@@ -22,9 +24,6 @@ namespace Applified.Core.Extensibility
 
         public virtual void OnShutdown() { }
 
-        public abstract OwinMiddleware GetTenantMiddleware(
-            Guid applicationId, 
-            OwinMiddleware next,
-            IAppBuilder appBuilder);
+        public abstract Task<OwinMiddleware> UseAsync(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder, IDependencyScope scope);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Applified.Core.ServiceContracts;
 
 namespace Applified.Core
@@ -16,5 +17,10 @@ namespace Applified.Core
         }
 
         public string FeatureDirectory { get { return @"C:\Applified\features"; } }
+
+        public string GetDeploymentDirectory(Guid deploymentId)
+        {
+            return Path.Combine(DeploymentDirectory, deploymentId.ToString());
+        }
     }
 }

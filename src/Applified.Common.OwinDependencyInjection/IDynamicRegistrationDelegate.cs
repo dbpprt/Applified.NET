@@ -1,9 +1,10 @@
-﻿using Microsoft.Owin;
+﻿using System.Threading.Tasks;
+using Microsoft.Owin;
 
 namespace Applified.Common.OwinDependencyInjection
 {
     public interface IDynamicRegistrationDelegate
     {
-        void InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context);
+        Task InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context);
     }
 }

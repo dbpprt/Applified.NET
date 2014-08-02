@@ -2,6 +2,9 @@
 using System.Collections.Concurrent;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Applified.Common;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.DataAccess.Contracts;
 using Applified.Core.Entities.Infrastructure;
@@ -10,9 +13,21 @@ using Applified.Core.ServiceContracts;
 using Microsoft.Owin;
 using Microsoft.Practices.Unity;
 
-namespace Applified.Core.Services
+namespace Applified.Core.Handlers
 {
-    public class MultiTenancyContextHandler : AbstractNotificationSubscriber, IDynamicRegistrationDelegate, ICurrentContext, IDisposable, IUnprotectedContext
+    /// <summary>
+    /// This class represents the CurrentContext in a tenant aware manner.
+    /// All code gets executed per request => performance critical
+    /// TODO: It should contain some better loading logic without loading all tenants
+    /// TODO: some applicationinitialization mechanism
+    /// </summary>
+    [UsedImplicitly]
+    public class MultiTenancyContextHandler :
+        AbstractNotificationSubscriber,
+        IDynamicRegistrationDelegate,
+        ICurrentContext,
+        IDisposable,
+        IUnprotectedContext
     {
         private string _host;
         private string _accessToken;
@@ -20,77 +35,49 @@ namespace Applified.Core.Services
         private IServiceProvider _provider;
 
         private static ConcurrentDictionary<string, Application> _applicationBindings = null;
-        private static object _applicationBindingsLock = new object();
+        private static readonly SemaphoreSlim ApplicationBindingsLock = new SemaphoreSlim(1);
+
+        private IServerEnvironment _serverEnvironment;
 
         public bool IsAdmin { get; set; }
 
-        // TODO: this isnt the right way.. just a simple workaround
-        public Guid ApplicationId
-        {
-            get { return Application.Id; }
-        }
+        public Guid ApplicationId { get; set; }
 
-        public Guid? DeploymentId
+        public Guid? DeploymentId { get; set; }
+
+        public string BaseDirectory { get; set; }
+
+        /// <summary>
+        /// This method invalidates the caches when a new deployment "arrives"
+        /// TODO: we should only delete the affected application because its not required to rebuild all caches
+        /// </summary>
+        /// <param name="deploymentId"></param>
+        /// <returns></returns>
+        public override async Task OnNewDeployment(Guid deploymentId)
         {
-            get
+            await ApplicationBindingsLock.WaitAsync();
+
+            try
             {
-                if (_deploymentToServe != null)
-                    return _deploymentToServe;
+                _applicationBindings = null;
 
-                if (_application != null)
-                    return _application.ActiveDeploymentId;
-
-                return Application.ActiveDeploymentId;
+            }
+            finally
+            {
+                ApplicationBindingsLock.Release();
             }
         }
 
-        private Application Application
-        {
-            get
-            {
-                if (_application != null)
-                    return _application;
-
-                lock (_applicationBindingsLock)
-                {
-                    Application application;
-                    if (_applicationBindings.TryGetValue(_host, out application))
-                    {
-                        return application;
-                    }
-
-                    throw new InvalidOperationException("You're trying to do something bad!");
-                }
-            }
-        }
-
-        public string BaseDirectory { get; private set; }
-        private Application _application;
-        private Guid? _deploymentToServe;
-
-        public MultiTenancyContextHandler()
-        {
-            _application = null;
-            IsAdmin = false;
-        }
-
-        public override void OnNewDeployment(Guid deploymentId)
-        {
-            lock (_applicationBindingsLock)
-            {
-                _applicationBindings = new ConcurrentDictionary<string, Application>();
-                _deploymentToServe = null;
-                _application = null;
-            }
-
-            base.OnNewDeployment(deploymentId);
-        }
-
-        public void InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context)
+        public async Task InterceptRequestScope(IUnityServiceProvider provider, IOwinContext context)
         {
             _provider = provider as IServiceProvider;
 
             var scope = provider.GetUnderlayingContainer();
+
+            _serverEnvironment = scope.Resolve<IServerEnvironment>();
+
+            // we are able to register (override) dependecies per request
+            // so we are building the request context ondemand and per request
 
             scope.RegisterInstance<INotificationSubscriber>("MultiTenancyContextHandler", this);
 
@@ -98,38 +85,35 @@ namespace Applified.Core.Services
 
             scope.RegisterInstance<IUnprotectedContext>(this, new HierarchicalLifetimeManager());
 
-            if (_applicationBindings == null)
-            {
-                var applications = scope.Resolve<IRepository<Application>>();
-
-                lock (_applicationBindingsLock)
-                {
-                    _applicationBindings = new ConcurrentDictionary<string, Application>();
-
-                    var results = applications.Query()
-                        .Include(entity => entity.Bindings)
-                        .ToList();
-
-                    var bindings = results
-                        .SelectMany(result => result.Bindings)
-                        .Select(
-                            binding =>
-                            {
-                                binding.Application =
-                                    results.First(application => application.Id == binding.ApplicationId);
-                                return binding;
-                            })
-                        .ToList();
-
-                    foreach (var binding in bindings)
-                    {
-                        _applicationBindings.TryAdd(binding.Hostname, binding.Application);
-                    }
-                }
-            }
+            await Initialize(scope);
 
             _host = context.Request.Host.Value;
 
+            Application currentApplication;
+            if (_applicationBindings.TryGetValue(_host, out currentApplication))
+            {
+                // no need for locking here.. its called per request...
+                DeploymentId = currentApplication.ActiveDeploymentId;
+                ApplicationId = currentApplication.Id;
+
+                if (DeploymentId.HasValue)
+                {
+                    BaseDirectory = _serverEnvironment.GetDeploymentDirectory(DeploymentId.Value);
+                }
+            }
+
+
+            await AdminAuthorize(context);
+        }
+
+        /// <summary>
+        /// Checks for an access token in header params and tries to authorize the user.
+        /// This implementation needs some refactoring.. And some better code structure
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private async Task AdminAuthorize(IOwinContext context)
+        {
             string[] tokens;
             _accessToken = context.Request.Headers.TryGetValue("AccessToken", out tokens)
                 ? tokens.FirstOrDefault()
@@ -138,8 +122,8 @@ namespace Applified.Core.Services
             if (!string.IsNullOrEmpty(_accessToken))
             {
                 var applications = _provider.Resolve<IRepository<Application>>();
-                var desiredApplication = applications.Query()
-                    .FirstOrDefault(application => application.AccessToken == _accessToken);
+                var desiredApplication = await applications.Query()
+                    .FirstOrDefaultAsync(application => application.AccessToken == _accessToken);
 
                 if (desiredApplication == null)
                 {
@@ -147,28 +131,66 @@ namespace Applified.Core.Services
                 }
 
                 IsAdmin = true;
-                _application = desiredApplication;
+
+                // this tricks the service/dataaccess architecture to allow admins to 
+                // edit their applications without accessing a valid binding
+                ApplicationId = desiredApplication.Id;
+
+                // not quire sure wether this is required :/
+                DeploymentId = desiredApplication.ActiveDeploymentId;
+            }
+        }
+
+        /// <summary>
+        /// This initializes the application bindings cache to avoid database queries on each request
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <returns></returns>
+        private static async Task Initialize(IUnityContainer scope)
+        {
+            if (_applicationBindings == null)
+            {
+                await ApplicationBindingsLock.WaitAsync();
+
+                try
+                {
+                    if (_applicationBindings == null)
+                    {
+                        var applications = scope.Resolve<IRepository<Application>>();
+
+                        _applicationBindings = new ConcurrentDictionary<string, Application>();
+
+                        var results = await applications.Query()
+                            .Include(entity => entity.Bindings)
+                            .ToListAsync();
+
+                        var bindings = results
+                            .SelectMany(result => result.Bindings)
+                            .Select(
+                                binding =>
+                                {
+                                    binding.Application =
+                                        results.First(entity => entity.Id == binding.ApplicationId);
+                                    return binding;
+                                })
+                            .ToList();
+
+                        foreach (var binding in bindings)
+                        {
+                            _applicationBindings.TryAdd(binding.Hostname, binding.Application);
+                        }
+                    }
+                }
+                finally
+                {
+                    ApplicationBindingsLock.Release();
+                }
             }
         }
 
         public void Dispose()
         {
 
-        }
-
-        public void SetDeploymentToServe(Guid? guid)
-        {
-            _deploymentToServe = guid;
-        }
-
-        public void SetIsAdmin(bool isAdmin)
-        {
-            IsAdmin = isAdmin;
-        }
-
-        public void SetCurrentApplication(Application application)
-        {
-            _application = application;
         }
     }
 }

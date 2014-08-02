@@ -43,5 +43,7 @@ namespace Applified.Core.ServiceContracts
         Task<List<FeatureBase>> GetFeatureInstancesAsync();
 
         Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory);
+
+        Task<Dictionary<string, string>> GetSettingsAsync(Guid featureId);
     }
 }
