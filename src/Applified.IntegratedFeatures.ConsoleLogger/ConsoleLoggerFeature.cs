@@ -20,7 +20,8 @@ namespace Applified.IntegratedFeatures.ConsoleLogger
 
         public override int ExecutionOrderKey
         {
-            get { return int.MaxValue; }
+            // TODO: we need something better here to specify the features position in the pipe
+            get { return int.MaxValue - 100; }
         }
 
         public override Task<OwinMiddleware> UseAsync(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder, IDependencyScope scope)

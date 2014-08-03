@@ -95,6 +95,10 @@
       <Project>{2b1fcdc1-49c9-40a5-8d84-c134772e1d1c}</Project>
       <Name>Applified.IntegratedFeatures.ConsoleLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Applified.IntegratedFeatures.PageOfDeath\Applified.IntegratedFeatures.PageOfDeath.csproj">
+      <Project>{3a440b69-7c6f-4a11-9849-dc661dc83500}</Project>
+      <Name>Applified.IntegratedFeatures.PageOfDeath</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.IntegratedFeatures.StaticFileHandler\Applified.IntegratedFeatures.StaticFileHandler.csproj">
       <Project>{c031284a-739d-4bb8-9db5-5647e4089e4f}</Project>
       <Name>Applified.IntegratedFeatures.StaticFileHandler</Name>

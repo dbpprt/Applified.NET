@@ -60,7 +60,7 @@ namespace Applified.IntegratedFeatures.StaticFileHandler
                 });
             }
 
-            if (_settings.GetValue<bool>(Settings.UseDefaultFiles))
+            if (_settings.GetValue<bool>(Settings.EnableDefaultFiles))
             {
                 middleware = new DefaultFilesMiddlewareWrapper(middleware, new DefaultFilesOptions
                 {

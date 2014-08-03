@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\WebapiPluginAssemblyResolver.cs" />
     <Compile Include="ConfigurationModel.cs" />
     <Compile Include="Contracts\AbstractNotificationSubscriber.cs" />
     <Compile Include="Contracts\IApplicationEventHandler.cs" />

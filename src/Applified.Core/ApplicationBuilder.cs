@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Web.Http;
 using Applified.Common.OwinDependencyInjection;
@@ -17,20 +18,18 @@ namespace Applified.Core
 {
     public static class ApplicationBuilder
     {
+        public class Test : IDisposable
+        {
+            public void Dispose()
+            {
+                Debugger.Break();
+
+            }
+        }
+
         public static void Build(IAppBuilder app)
         {
             app.UseStageMarker(PipelineStage.MapHandler);
-
-            app.UseErrorPage(new ErrorPageOptions
-            {
-                ShowCookies = true,
-                ShowEnvironment = true,
-                ShowExceptionDetails = true,
-                ShowHeaders = true,
-                ShowQuery = true,
-                ShowSourceCode = true,
-                SourceCodeLineCount = 20
-            });
 
             var container = new UnityContainer()
                 .RegisterModule<MainUnityModule>();
@@ -50,11 +49,9 @@ namespace Applified.Core
 
             //app.Use<MetaWeblogService>();
 
-            //app.Use<SimpleUrlRoutingMiddleware>(StaticRouteConfiguration());
-
-            //app.UseWebApi(
-            //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
-            //    );
+            app.UseWebApi(
+                app.PrepareWebapiAdapter(ApiHttpConfiguration())
+                );
 
             //app.Use<MultiTenantFileServerMiddleware>(null, "C:\\Deployments");
         }

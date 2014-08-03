@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Applified.Common.Exceptions;
 
 namespace Applified.Common
@@ -7,12 +8,12 @@ namespace Applified.Common
     public abstract class SettingsBase
     {
         private readonly Dictionary<string, string> _settings;
-        private readonly Dictionary<string, Tuple<object, Type>> _mappings;
+        private readonly Dictionary<string, Tuple<object, Type, string>> _mappings;
 
         public SettingsBase(Dictionary<string, string> settings)
         {
             _settings = settings;
-            _mappings = new Dictionary<string, Tuple<object, Type>>();
+            _mappings = new Dictionary<string, Tuple<object, Type, string>>();
         }
 
         public T GetValue<T>(string key)
@@ -26,7 +27,7 @@ namespace Applified.Common
 
             if (!optional.IsSet)
             {
-                Tuple<object, Type> mapping;
+                Tuple<object, Type, string> mapping;
                 if (!_mappings.TryGetValue(key, out mapping))
                 {
                     throw new InvalidSettingException(key);
@@ -82,14 +83,36 @@ namespace Applified.Common
             };
         }
 
-        public void Register<T>(string key, T defaultValue)
+        public List<AvaliableSetting> GetAvaliableSettings()
         {
-            _mappings.Add(key, new Tuple<object, Type>(defaultValue, typeof(T)));
+            return _mappings.Select(mapping => new AvaliableSetting
+            {
+                Key = mapping.Key,
+                DefaultValue = mapping.Value.Item1,
+                ValueType = mapping.Value.Item2,
+                Description = mapping.Value.Item3,
+            }).ToList();
+        } 
+
+        public void Register<T>(string key, T defaultValue, string description)
+        {
+            _mappings.Add(key, new Tuple<object, Type, string>(defaultValue, typeof(T), description));
         }
 
         public virtual T ParseType<T>(string value)
         {
             return (T)Convert.ChangeType(value, typeof(T));
         }
+    }
+
+    public class AvaliableSetting
+    {
+        public string Key { get; set; }
+
+        public object DefaultValue { get; set; }
+
+        public Type ValueType { get; set; }
+
+        public string Description { get; set; }
     }
 }
