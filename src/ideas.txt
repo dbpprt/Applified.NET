@@ -1,0 +1,9 @@
+
+# implement some limiting mechanisms.. a tenant shouldnt be able to beat the hell out of a server instance
+# https://github.com/damianh/LimitsMiddleware/blob/master/src/LimitsMiddleware/Limits.cs
+
+# implement a nuget server endpoint to receive features or applications 
+# would be cool :)
+
+# sample application to use applified as application deploy manager.. so it replaces the "deploy" handler and deploys applications
+# to a local running iis.. like a simple techdemo to show the capabilities of this impressive framework
