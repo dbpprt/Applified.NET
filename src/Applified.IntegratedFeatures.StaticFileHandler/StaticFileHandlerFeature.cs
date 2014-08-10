@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
+using Applified.Common;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility;
 using Applified.Core.ServiceContracts;
@@ -14,6 +17,11 @@ namespace Applified.IntegratedFeatures.StaticFileHandler
     [Export(typeof(IntegratedFeatureBase))]
     public class StaticFileHandlerFeature : IntegratedFeatureBase
     {
+        public override SettingsBase GetSettings(Dictionary<string, string> dictionary)
+        {
+            return new Settings(dictionary);
+        }
+
         public override Guid FeatureId
         {
             get { return new Guid("31EF6DF6-978C-4001-9E93-56C183772AF7"); }
@@ -55,6 +63,11 @@ namespace Applified.IntegratedFeatures.StaticFileHandler
         public override string Author
         {
             get { return "Dennis Bappert"; }
+        }
+
+        public override string AssemblyName
+        {
+            get { return Assembly.GetExecutingAssembly().FullName; }
         }
     }
 }

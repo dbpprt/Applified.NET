@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Web.Http;
 using Applified.Common.OwinDependencyInjection;
@@ -43,7 +44,6 @@ namespace Applified.Core
             app.Use<ApplicationDeploymentProviderMiddleware>();
 
             app.Use<TenantFeatureMiddleware>(app);
-
 
             //app.Use<ManagementMiddleware>();
 

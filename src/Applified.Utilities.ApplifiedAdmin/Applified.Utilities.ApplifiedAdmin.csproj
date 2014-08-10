@@ -73,6 +73,7 @@
     <Compile Include="Commands\AddBindingCommand.cs" />
     <Compile Include="Commands\ListBindingsCommand.cs" />
     <Compile Include="Commands\ListApplicationsCommand.cs" />
+    <Compile Include="Commands\ListAvaliableSettingsCommand.cs" />
     <Compile Include="Commands\SynchronizeFeaturesCommand.cs" />
     <Compile Include="Commands\SetGlobalFeatureSetting.cs" />
     <Compile Include="Commands\ListGlobalFeatureSettings.cs" />
@@ -94,6 +95,10 @@
     <ProjectReference Include="..\Applified.Core.Entities\Applified.Core.Entities.csproj">
       <Project>{216E5512-316F-4109-8C32-055B3A7A657B}</Project>
       <Name>Applified.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Extensibility\Applified.Core.Extensibility.csproj">
+      <Project>{FE034BC2-887D-4F08-9DB8-A556BF370FA6}</Project>
+      <Name>Applified.Core.Extensibility</Name>
     </ProjectReference>
     <ProjectReference Include="..\Applified.Core.ServiceContracts\Applified.Core.ServiceContracts.csproj">
       <Project>{C1402041-F0E4-433B-A761-91B40C22405A}</Project>

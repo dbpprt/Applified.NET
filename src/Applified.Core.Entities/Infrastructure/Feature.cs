@@ -25,6 +25,8 @@ namespace Applified.Core.Entities.Infrastructure
         [Required]
         public string Author { get; set; }
 
+        public string AssemblyName { get; set; }
+
         public FeatureType FeatureType { get; set; }
 
         [Required]

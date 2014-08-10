@@ -16,5 +16,6 @@ namespace Applified.Core.Extensibility
         public abstract string Version { get; }
 
         public abstract string Author { get; }
+
     }
 }

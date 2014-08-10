@@ -16,6 +16,12 @@ namespace Applified.Common
             _mappings = new Dictionary<string, Tuple<object, Type, string>>();
         }
 
+        public SettingsBase()
+            : this(null)
+        {
+            
+        } 
+
         public T GetValue<T>(string key)
         {
             var optional = GetRawValue<T>(key);
@@ -48,7 +54,7 @@ namespace Applified.Common
         {
             string value;
 
-            if (_settings.TryGetValue(key, out value))
+            if (_settings != null && _settings.TryGetValue(key, out value))
             {
                 try
                 {

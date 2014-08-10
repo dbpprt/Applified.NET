@@ -50,6 +50,7 @@
     <Compile Include="IDeploymentService.cs" />
     <Compile Include="IFeatureService.cs" />
     <Compile Include="IServerEnvironment.cs" />
+    <Compile Include="ISetupService.cs" />
     <Compile Include="IStorageService.cs" />
     <Compile Include="IUnprotectedContext.cs" />
     <Compile Include="IUrlBuilderService.cs" />

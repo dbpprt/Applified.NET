@@ -12,8 +12,8 @@ namespace Applified.Core.Handlers
     {
         public Task OnStartup(IUnityContainer container, IDependencyScope scope)
         {
-            var featureService = scope.Resolve<IFeatureService>();
-            return featureService.SynchronizeIntegratedFeaturesWithDatabaseAsync(
+            var setupService = scope.Resolve<ISetupService>();
+            return setupService.InitializeIntegratedFeatures(
                 AppDomain.CurrentDomain.BaseDirectory);
         }
 

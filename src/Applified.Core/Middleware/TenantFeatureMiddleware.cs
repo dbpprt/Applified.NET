@@ -15,7 +15,6 @@ namespace Applified.Core.Middleware
         private readonly IAppBuilder _appBuilder;
         private static ConcurrentDictionary<Guid, OwinMiddleware> _tenantOwinPipe;
         private static SemaphoreSlim _tenantPipeLock;
-        private static OwinMiddleware _coreMiddlewares;
 
         public TenantFeatureMiddleware(
             OwinMiddleware next,
@@ -40,7 +39,7 @@ namespace Applified.Core.Middleware
             }
 
             var featureService = scope.Resolve<IFeatureService>();
-            var registeredFeatures = await featureService.GetFeatureInstancesAsync();
+            var registeredFeatures = await featureService.GetFeaturesAsync();
 
             registeredFeatures = registeredFeatures
                 .OrderByDescending(feature => feature.ExecutionOrderKey)
@@ -51,9 +50,17 @@ namespace Applified.Core.Middleware
 
             for (var i = count - 1; i >= 0; i--)
             {
-                var provider = registeredFeatures[i];
+                var feature = registeredFeatures[i];
 
-                var currentMiddleware = await provider.UseAsync(
+                // TODO: redudant database queries.. GetFeatureAsync() get called twice
+                var instance = await featureService.InstantiateFeatureAsync(feature.Id);
+
+                if (instance == null)
+                {
+                    continue;
+                }
+
+                var currentMiddleware = await instance.UseAsync(
                     current.ApplicationId,
                     lastMiddleware,
                     _appBuilder,

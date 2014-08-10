@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
+using Applified.Common;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility;
 using Applified.Core.ServiceContracts;
@@ -18,6 +20,11 @@ namespace Applified.IntegratedFeatures.PageOfDeath
     [Export(typeof(IntegratedFeatureBase))]
     public class PageOfDeathFeature : IntegratedFeatureBase
     {
+        public override SettingsBase GetSettings(Dictionary<string, string> dictionary)
+        {
+            return new Settings(dictionary);
+        }
+
         public override Guid FeatureId
         {
             get { return new Guid("12EF8DF6-978C-4001-9E93-56C183776BF7"); }
@@ -76,6 +83,11 @@ namespace Applified.IntegratedFeatures.PageOfDeath
         public override string Author
         {
             get { return "Dennis Bappert"; }
+        }
+
+        public override string AssemblyName
+        {
+            get { return Assembly.GetExecutingAssembly().FullName; }
         }
     }
 }

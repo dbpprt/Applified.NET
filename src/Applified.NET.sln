@@ -59,6 +59,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{27F725CA-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Core.Tests", "Applified.Core.Tests\Applified.Core.Tests.csproj", "{984894BD-7881-4463-8B07-F58C4C62136D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D7C97FA-23EB-4592-BA1D-72805B31A391}"
+	ProjectSection(SolutionItems) = preProject
+		ideas.txt = ideas.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -78,6 +78,7 @@
     <Compile Include="Services\DatabaseStorageService.cs" />
     <Compile Include="Services\DeploymentService.cs" />
     <Compile Include="Services\FeatureService.cs" />
+    <Compile Include="Services\SetupService.cs" />
     <Compile Include="Services\UrlBuilderService.cs" />
     <Compile Include="ServiceUnityModule.cs" />
     <Compile Include="UnitOfWork.cs" />

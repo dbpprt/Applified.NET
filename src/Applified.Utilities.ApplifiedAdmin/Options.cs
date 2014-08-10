@@ -63,6 +63,10 @@ namespace Applified.Utilities.ApplifiedAdmin
             Description = "Sets or adds a global feature settings", GroupId = "commands")]
         public bool SetGlobalFeatureSetting { get; set; }
 
+        [CommandLineOption(Name = "list-avaliable-settings",
+            Description = "Lists all settings that are avaliable for a given feature", GroupId = "commands")]
+        public bool ListAvaliableSettings { get; set; }
+
         [CommandLineOption(Name = "f", Aliases = "feature",
             Description = "The target feature", GroupId = "options")]
         public string TargetFeature { get; set; }

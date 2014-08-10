@@ -13,21 +13,22 @@ namespace Applified.Utilities.ApplifiedAdmin.Commands
     class SynchronizeFeaturesCommand : CommandBase
     {
         private readonly IFeatureService _featureService;
+        private readonly ISetupService _setupService;
 
         public SynchronizeFeaturesCommand(
-            IFeatureService featureService,
+            ISetupService setupService,
             Options options
             ) 
             : base(options)
         {
-            _featureService = featureService;
+            _setupService = setupService;
         }
 
         public override async Task<int> Execute()
         {
             Debugger.Launch();
 
-            await _featureService.SynchronizeIntegratedFeaturesWithDatabaseAsync(Options.TargetDirectory);
+            await _setupService.InitializeIntegratedFeatures(Options.TargetDirectory);
 
             Console.WriteLine("Features synchronized");
 

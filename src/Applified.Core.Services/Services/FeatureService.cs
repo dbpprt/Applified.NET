@@ -1,4 +1,23 @@
-﻿
+﻿#region Copyright (C) 2014 Applified.NET 
+// Copyright (C) 2014 Applified.NET
+// http://www.applified.net
+
+// This file is part of Applified.NET.
+
+// Applified.NET is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+#endregion 
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -7,6 +26,7 @@ using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,16 +49,6 @@ namespace Applified.Core.Services.Services
         private readonly IStorageService _storageService;
         private readonly IServerEnvironment _serverEnvironment;
         private readonly IUnitOfWork _context;
-
-        [ImportMany(typeof(IntegratedFeatureBase))]
-        private IntegratedFeatureBase[] _integratedFeatures = null;
-
-        private static List<IntegratedFeatureBase> IntegratedFeatures = null;
-        private static SemaphoreSlim IntegratedFeatureLock = new SemaphoreSlim(1);
-
-            
-        [ImportMany(typeof(FeatureBase))]
-        private FeatureBase[] _thirdPartyFeatures = null;
 
         public FeatureService(
             IRepository<Feature> features,
@@ -211,78 +221,6 @@ namespace Applified.Core.Services.Services
             throw new NotImplementedException();
         }
 
-        private void LoadIntegratedFeatures(string directory = null)
-        {
-            if (string.IsNullOrEmpty(directory))
-                directory = _serverEnvironment.ApplicationBaseDirectory;
-            var baseDirectory = directory;
-            var catalog = new DirectoryCatalog(baseDirectory, "*.IntegratedFeatures.*.dll");
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(this);
-        }
-
-        public async Task<List<FeatureBase>> GetFeatureInstancesAsync()
-        {
-            LoadIntegratedFeatures();
-
-            // TODO: better loading strategy
-            var instances = _integratedFeatures.Cast<FeatureBase>();
-
-            var activeFeatures = await _featureApplicationMappings.Query()
-                .ToListAsync();
-
-            return instances.Where(
-                    instance => activeFeatures.Any(active => active.FeatureId == instance.FeatureId))
-                .ToList();
-        }
-
-        public async Task SynchronizeIntegratedFeaturesWithDatabaseAsync(string baseDirectory = null)
-        {
-            LoadIntegratedFeatures(baseDirectory);
-            var loadedFeatures = _integratedFeatures.ToList();
-
-            var existingFeatures = await _features.Query()
-                .Where(entity => entity.FeatureType == FeatureType.Integrated)
-                .ToListAsync();
-
-            foreach (var loadedFeature in loadedFeatures)
-            {
-                var existing = existingFeatures.FirstOrDefault(entity => entity.Id == loadedFeature.FeatureId);
-
-                if (existing == null)
-                {
-                    var newFeature = new Feature
-                    {
-                        Author = loadedFeature.Author,
-                        Description = loadedFeature.Description,
-                        FeatureType = FeatureType.Integrated,
-                        Name = loadedFeature.Name,
-                        Id = loadedFeature.FeatureId,
-                        VersionIdentifier = loadedFeature.Version,
-                        StoredObjectId = null,
-                        StoredObject = null,
-                        ExecutionOrderKey = loadedFeature.ExecutionOrderKey
-                    };
-
-                    _features.Insert(newFeature, false);
-                }
-                else
-                {
-                    existing.Author = loadedFeature.Author;
-                    existing.Description = loadedFeature.Description;
-                    existing.Name = loadedFeature.Name;
-                    existing.VersionIdentifier = loadedFeature.Version;
-                    existing.StoredObjectId = null;
-                    existing.ExecutionOrderKey = loadedFeature.ExecutionOrderKey;
-
-                    _features.Update(existing, false);
-                }
-            }
-
-
-            await _context.SaveAsync();
-        }
-
         public async Task<Dictionary<string, string>> GetSettingsAsync(Guid featureId)
         {
             var globalSettings = await GetGlobalFeatureSettingsAsync(featureId);
@@ -294,6 +232,59 @@ namespace Applified.Core.Services.Services
             }
 
             return applicationSettings;
+        }
+
+        private Task<Assembly> LoadIntegratedFeatureAssembly(Feature feature)
+        {
+            // we assume that integrated features are located in a global scope... gac, basedir, etc..
+            //Assembly.l
+            var assembly = Assembly.Load(feature.AssemblyName);
+            return Task.FromResult(assembly);
+        }
+
+        public async Task<FeatureBase> InstantiateFeatureAsync(Guid featureId)
+        {
+            var feature = await GetFeatureAsync(featureId);
+
+            if (feature == null)
+            {
+                return null;
+            }
+
+            Assembly assembly = null;
+
+            switch (feature.FeatureType)
+            {
+                case FeatureType.Integrated:
+                    assembly = await LoadIntegratedFeatureAssembly(feature);
+                    break;
+
+                default:
+                    return null;
+            }
+
+            if (assembly == null)
+            {
+                return null;
+            }
+
+            var types = assembly.GetTypes()
+                .Where(type => type.IsSubclassOf(typeof (FeatureBase)))
+                .ToList();
+
+            if (types.Count > 1)
+            {
+                // TODO: own exception
+                throw new ArgumentOutOfRangeException("A feature must contain only 1 class inherit from FeatureBase");
+            }
+
+            if (!types.Any())
+            {
+                // TODO: own exception
+                throw new ArgumentOutOfRangeException("The feature doesnt contains a subclass of FeatureBase");
+            }
+
+            return Activator.CreateInstance(types.First()) as FeatureBase;
         }
 
         private Task<ConfigurationModel> GetFeatureConfigurationAsync(byte[] zipArchive)

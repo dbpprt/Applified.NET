@@ -27,6 +27,7 @@ namespace Applified.Core
                 .RegisterType<IDeploymentService, DeploymentService>(new HierarchicalLifetimeManager())
                 .RegisterType<IFeatureService, FeatureService>(new HierarchicalLifetimeManager())
                 .RegisterType<IApplicationService, ApplicationService>(new HierarchicalLifetimeManager())
+                .RegisterType<ISetupService, SetupService>(new HierarchicalLifetimeManager())
 
 #if DEBUG
                 .RegisterType<IServerEnvironment, DevelopmentServerEnvironment>(new HierarchicalLifetimeManager())

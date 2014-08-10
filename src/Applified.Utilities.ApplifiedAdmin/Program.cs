@@ -73,6 +73,7 @@ namespace Applified.Utilities.ApplifiedAdmin
             unityContainer.RegisterType(typeof (AddBindingCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof (EnableFeatureCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof (DisableFeatureCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof (ListAvaliableSettingsCommand), new HierarchicalLifetimeManager());
 
             unityContainer.RegisterInstance(unityContainer);
 
@@ -91,6 +92,7 @@ namespace Applified.Utilities.ApplifiedAdmin
             commands.RegisterType(options => options.AddBinding, typeof(AddBindingCommand));
             commands.RegisterType(options => options.EnableFeature, typeof(EnableFeatureCommand));
             commands.RegisterType(options => options.DisableFeature, typeof(DisableFeatureCommand));
+            commands.RegisterType(options => options.ListAvaliableSettings, typeof(ListAvaliableSettingsCommand));
 
             return commands;
         }
