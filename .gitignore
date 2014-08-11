@@ -39,3 +39,4 @@ node_modules
 .nuget
 build/
 *.sln.ide
+build.zip

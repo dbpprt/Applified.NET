@@ -1,5 +1,4 @@
 properties {
-    #$BuildScriptsPath = Resolve-Path .
     $base_dir = Resolve-Path ..
     $packages = "$base_dir\packages"
     $build_dir = "$base_dir\build"
@@ -10,20 +9,30 @@ properties {
     $environment = ""   
 	$revision = "12"    
 	$version = "1.0.0." 
-	 
-	$platform = "x64"
-	$config = "Release"
+	
+    $header = "$base_dir\header-agpl.txt"
 
+	$config = "Release"
 }
+
 
 Framework "4.5.1x64"
 
-task default -depends CleanUp, Version, Compile, Zip
+task default -depends CleanUp, Version, License, Compile, Zip
 
+Task License -Description "Add license header to source files" {
+    . "$scripts_dir\license-header.ps1"
+
+    Ensure-LicenseHeader -sourceDirectory $src_dir -filter "*.cs" -headerFile $header
+}
 
 Task Zip -Description "Package the output" {
     . "$scripts_dir\zip.ps1"
-    out-zip $build_dir
+    $dest = "$build_dir.zip"
+
+    if (Test-Path($dest)) { rm $dest }
+
+    ZipFiles "$build_dir.zip" $build_dir
 }
 
 Task Version -Description "Version the assemblies" {

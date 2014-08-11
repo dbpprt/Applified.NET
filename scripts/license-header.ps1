@@ -18,7 +18,7 @@ function Ensure-LicenseHeader($sourceDirectory, $filter, $headerFile) {
     
     foreach ($item in $items) 
     {
-        $content = Get-Content $item
+        $content = Get-Content $item.FullName
         $prependHeader = $true;
 
         foreach ($line in $content) 
@@ -33,8 +33,8 @@ function Ensure-LicenseHeader($sourceDirectory, $filter, $headerFile) {
         
         if ($prependHeader -eq $true) 
         {
-            Set-Content $item $header 
-            Add-Content $item $content
+            Set-Content $item.FullName $header 
+            Add-Content $item.FullName $content
 
             Write-Host "Added license header to file $item"
         }
@@ -45,4 +45,3 @@ function Ensure-LicenseHeader($sourceDirectory, $filter, $headerFile) {
     }
 }
 
-Ensure-LicenseHeader -sourceDirectory "" -filter "*.cs" -headerFile "..\header-agpl.txt"
