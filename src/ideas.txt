@@ -7,3 +7,5 @@
 
 # sample application to use applified as application deploy manager.. so it replaces the "deploy" handler and deploys applications
 # to a local running iis.. like a simple techdemo to show the capabilities of this impressive framework
+
+# good psake example https://gist.github.com/toddb/1133511
