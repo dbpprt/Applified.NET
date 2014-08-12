@@ -21,6 +21,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
+using Applified.Common.Logging;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility.Contracts;
 using Applified.Core.ServiceContracts;
@@ -28,13 +29,32 @@ using Microsoft.Practices.Unity;
 
 namespace Applified.Core.Handlers
 {
+    /// <summary>
+    /// This class synchronizes the IntegratedFeature assemblies from applications base directory.
+    /// NOTE: This class should be used in a farm environment because servers may not use the same assemblies
+    /// </summary>
     class FeatureSynchronizationHandler : IApplicationEventHandler
     {
-        public Task OnStartup(IUnityContainer container, IDependencyScope scope)
+        public async Task OnStartup(IUnityContainer container, IDependencyScope scope)
         {
             var setupService = scope.Resolve<ISetupService>();
-            return setupService.InitializeIntegratedFeatures(
-                AppDomain.CurrentDomain.BaseDirectory);
+            var log = container.Resolve<ILog>();
+
+            try
+            {
+                await setupService.InitializeIntegratedFeatures(AppDomain.CurrentDomain.BaseDirectory);
+
+                log.Write("FeatureSynchronizationHandler called. All features are up to date!")
+                    .IsVerbose()
+                    .Save();
+            }
+            catch (Exception exception)
+            {
+                exception.ToEvent()
+                    .SetMessage("Unable to synchronize features on startup. An unknown error occurred.")
+                    .IsCritical()
+                    .Save(log);
+            }
         }
 
         public void OnShutdown() { }

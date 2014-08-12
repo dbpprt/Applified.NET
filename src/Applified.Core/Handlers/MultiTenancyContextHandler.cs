@@ -18,6 +18,26 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+#region Copyright (C) 2014 Applified.NET
+// Copyright (C) 2014 Applified.NET
+// http://www.applified.net
+
+// This file is part of Applified.NET.
+
+// Applified.NET is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+#endregion
+
 using System;
 using System.Collections.Concurrent;
 using System.Data.Entity;
@@ -25,6 +45,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Applified.Common;
+using Applified.Common.Logging;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.DataAccess.Contracts;
 using Applified.Core.Entities.Infrastructure;
@@ -49,6 +70,7 @@ namespace Applified.Core.Handlers
         IDisposable,
         IUnprotectedContext
     {
+        private readonly ILog _log;
         private string _host;
         private string _accessToken;
 
@@ -66,6 +88,13 @@ namespace Applified.Core.Handlers
         public Guid? DeploymentId { get; set; }
 
         public string BaseDirectory { get; set; }
+
+        public MultiTenancyContextHandler(
+            ILog log
+            )
+        {
+            _log = log;
+        }
 
         /// <summary>
         /// This method invalidates the caches when a new deployment "arrives"
@@ -147,6 +176,11 @@ namespace Applified.Core.Handlers
 
                 if (desiredApplication == null)
                 {
+                    _log.Write("Unauthorized access received.")
+                        .IsFailureAudit()
+                        .WithObject(_accessToken)
+                        .Save();
+
                     throw new UnauthorizedAccessException();
                 }
 
@@ -158,6 +192,11 @@ namespace Applified.Core.Handlers
 
                 // not quire sure wether this is required :/
                 DeploymentId = desiredApplication.ActiveDeploymentId;
+
+                _log.Write("Authorization granted for application " + ApplicationId)
+                        .IsFailureAudit()
+                        .WithObject(_accessToken)
+                        .Save();
             }
         }
 
@@ -166,7 +205,7 @@ namespace Applified.Core.Handlers
         /// </summary>
         /// <param name="scope"></param>
         /// <returns></returns>
-        private static async Task Initialize(IUnityContainer scope)
+        private async Task Initialize(IUnityContainer scope)
         {
             if (_applicationBindings == null)
             {
@@ -176,30 +215,46 @@ namespace Applified.Core.Handlers
                 {
                     if (_applicationBindings == null)
                     {
-                        var applications = scope.Resolve<IRepository<Application>>();
-
-                        _applicationBindings = new ConcurrentDictionary<string, Application>();
-
-                        var results = await applications.Query()
-                            .Include(entity => entity.Bindings)
-                            .ToListAsync();
-
-                        var bindings = results
-                            .SelectMany(result => result.Bindings)
-                            .Select(
-                                binding =>
-                                {
-                                    binding.Application =
-                                        results.First(entity => entity.Id == binding.ApplicationId);
-                                    return binding;
-                                })
-                            .ToList();
-
-                        foreach (var binding in bindings)
+                        using (var watch = new PerformanceWatch())
                         {
-                            _applicationBindings.TryAdd(binding.Hostname, binding.Application);
+                            var applications = scope.Resolve<IRepository<Application>>();
+
+                            _applicationBindings = new ConcurrentDictionary<string, Application>();
+
+                            var results = await applications.Query()
+                                .Include(entity => entity.Bindings)
+                                .ToListAsync();
+
+                            var bindings = results
+                                .SelectMany(result => result.Bindings)
+                                .Select(
+                                    binding =>
+                                    {
+                                        binding.Application =
+                                            results.First(entity => entity.Id == binding.ApplicationId);
+                                        return binding;
+                                    })
+                                .ToList();
+
+                            foreach (var binding in bindings)
+                            {
+                                _applicationBindings.TryAdd(binding.Hostname, binding.Application);
+                            }
+
+                            _log.Write("MultiTenancyContextHandler initialized " + bindings.Count + " bindings in " + watch.Result.TotalMilliseconds + "ms")
+                                .IsVerbose()
+                                .Save();
                         }
                     }
+                }
+                catch (Exception exception)
+                {
+                    exception.ToEvent()
+                        .SetMessage("Unexpected error occurred while initializing application bindings cache in MultiTenancyContextHandler")
+                        .IsCritical()
+                        .Save();
+
+                    throw;
                 }
                 finally
                 {

@@ -120,6 +120,14 @@
       <Project>{B0B34444-61CF-41A4-BB53-860F50FC14AA}</Project>
       <Name>Applified.Common.Exceptions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.Logging.WindowsEventLog\Applified.Common.Logging.WindowsEventLog.csproj">
+      <Project>{958496B1-3F69-46A9-9D14-A6A24A2BAAE3}</Project>
+      <Name>Applified.Common.Logging.WindowsEventLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.Logging\Applified.Common.Logging.csproj">
+      <Project>{A7F3BC03-67D2-4829-9004-1D6A482CD116}</Project>
+      <Name>Applified.Common.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.Common.OwinDependencyInjection\Applified.Common.OwinDependencyInjection.csproj">
       <Project>{3B993BE4-4F21-40A6-ADFF-DA1E650F7EF3}</Project>
       <Name>Applified.Common.OwinDependencyInjection</Name>

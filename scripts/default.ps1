@@ -18,6 +18,8 @@ properties {
 
 Framework "4.5.1x64"
 
+#task default -depends CleanUp, Compile
+
 task default -depends CleanUp, Version, License, Compile, Zip
 
 Task License -Description "Add license header to source files" {

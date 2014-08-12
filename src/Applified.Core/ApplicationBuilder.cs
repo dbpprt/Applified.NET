@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Threading;
 using System.Web.Http;
 using Applified.Common;
+using Applified.Common.Logging;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.Identity;
@@ -49,11 +50,11 @@ namespace Applified.Core
 
             app.UseContainer(new UnityDependencyResolver(container));
 
-            app.Use<ApplicationEventMiddleware>(container);
+            app.Use<ApplicationEventMiddleware>(app, container);
 
-            //app.Use<DeploymentMiddleware>();
+            app.Use<DeploymentMiddleware>();
 
-            //app.Use<ApplicationDeploymentProviderMiddleware>();
+            app.Use<ApplicationDeploymentProviderMiddleware>();
 
             app.Use<TenantFeatureMiddleware>(app);
 
@@ -65,7 +66,10 @@ namespace Applified.Core
             //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
             //    );
 
-            //app.Use<MultiTenantFileServerMiddleware>(null, "C:\\Deployments");
+            container.Resolve<ILog>()
+                .Write("Server started successfully and is ready to receive requests!")
+                .IsVerbose()
+                .Save();
         }
 
 

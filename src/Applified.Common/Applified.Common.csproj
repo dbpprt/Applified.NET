@@ -68,11 +68,13 @@
   <ItemGroup>
     <Compile Include="Annotations.cs" />
     <Compile Include="LambdaComparer.cs" />
+    <Compile Include="Middleware.cs" />
     <Compile Include="NoopMiddleware.cs" />
     <Compile Include="ObjectDumper.cs" />
     <Compile Include="Optional.cs" />
     <Compile Include="OrderedQueryableExtensions.cs" />
     <Compile Include="PagingData.cs" />
+    <Compile Include="PerformanceWatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomTokenGenerator.cs" />
     <Compile Include="SettingsBase.cs" />
@@ -89,6 +91,10 @@
     <ProjectReference Include="..\Applified.Common.Exceptions\Applified.Common.Exceptions.csproj">
       <Project>{B0B34444-61CF-41A4-BB53-860F50FC14AA}</Project>
       <Name>Applified.Common.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.Logging\Applified.Common.Logging.csproj">
+      <Project>{A7F3BC03-67D2-4829-9004-1D6A482CD116}</Project>
+      <Name>Applified.Common.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\Applified.Common.OwinDependencyInjection\Applified.Common.OwinDependencyInjection.csproj">
       <Project>{3B993BE4-4F21-40A6-ADFF-DA1E650F7EF3}</Project>

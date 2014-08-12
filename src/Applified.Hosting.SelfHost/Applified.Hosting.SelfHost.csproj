@@ -83,6 +83,46 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Applified.Common.Exceptions\Applified.Common.Exceptions.csproj">
+      <Project>{b0b34444-61cf-41a4-bb53-860f50fc14aa}</Project>
+      <Name>Applified.Common.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.Logging.WindowsEventLog\Applified.Common.Logging.WindowsEventLog.csproj">
+      <Project>{958496b1-3f69-46a9-9d14-a6a24a2baae3}</Project>
+      <Name>Applified.Common.Logging.WindowsEventLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.Logging\Applified.Common.Logging.csproj">
+      <Project>{a7f3bc03-67d2-4829-9004-1d6a482cd116}</Project>
+      <Name>Applified.Common.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common.OwinDependencyInjection\Applified.Common.OwinDependencyInjection.csproj">
+      <Project>{3b993be4-4f21-40a6-adff-da1e650f7ef3}</Project>
+      <Name>Applified.Common.OwinDependencyInjection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common\Applified.Common.csproj">
+      <Project>{86884f5c-b482-4986-8fd4-c3086bc0073f}</Project>
+      <Name>Applified.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.DataAccess\Applified.Core.DataAccess.csproj">
+      <Project>{b741f5f2-7cdb-4fab-bbc0-c30b61f32e9e}</Project>
+      <Name>Applified.Core.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Entities\Applified.Core.Entities.csproj">
+      <Project>{216e5512-316f-4109-8c32-055b3a7a657b}</Project>
+      <Name>Applified.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Extensibility\Applified.Core.Extensibility.csproj">
+      <Project>{fe034bc2-887d-4f08-9db8-a556bf370fa6}</Project>
+      <Name>Applified.Core.Extensibility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.ServiceContracts\Applified.Core.ServiceContracts.csproj">
+      <Project>{c1402041-f0e4-433b-a761-91b40c22405a}</Project>
+      <Name>Applified.Core.ServiceContracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Services\Applified.Core.Services.csproj">
+      <Project>{3500d4c7-6c17-4d8f-91fe-b885e9d724dc}</Project>
+      <Name>Applified.Core.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.Core\Applified.Core.csproj">
       <Project>{554F6529-22EC-403B-B800-4743BC5F001F}</Project>
       <Name>Applified.Core</Name>

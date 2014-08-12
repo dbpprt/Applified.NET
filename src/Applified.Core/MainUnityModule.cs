@@ -20,6 +20,8 @@
 
 using System;
 using System.Diagnostics;
+using Applified.Common.Logging;
+using Applified.Common.Logging.WindowsEventLog;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.Extensibility.Contracts;
@@ -50,6 +52,10 @@ namespace Applified.Core
                 .RegisterType<ISetupService, SetupService>(new HierarchicalLifetimeManager())
 
                 .RegisterType<IServerEnvironment, DevelopmentServerEnvironment>(new HierarchicalLifetimeManager())
+
+                .RegisterType<ILog, AggregateLog>(new TransientLifetimeManager())
+                .RegisterNamed<ILogAdapter, WindowsEventLogAdapter>(new TransientLifetimeManager())
+                .RegisterType<IEventLogSettings, DefaultEventLogSettings>(new TransientLifetimeManager())
 
                 .RegisterNamed<IApplicationEventHandler, RegisterGlobalFeatureDependenciesHandler>(
                     new HierarchicalLifetimeManager())

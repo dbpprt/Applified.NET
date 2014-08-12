@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandCollection.cs" />
+    <Compile Include="Commands\CreateEventSourceCommand.cs" />
     <Compile Include="Commands\DisableFeatureCommand.cs" />
     <Compile Include="Commands\EnableFeatureCommand.cs" />
     <Compile Include="Commands\AppContextCommandBase.cs" />

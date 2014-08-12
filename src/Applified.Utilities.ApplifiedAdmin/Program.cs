@@ -93,6 +93,7 @@ namespace Applified.Utilities.ApplifiedAdmin
             unityContainer.RegisterType(typeof(ListAvaliableSettingsCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(MigrateFeatureDatabaseCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(MigrateDatabaseCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof (CreateEventSourceCommand), new HierarchicalLifetimeManager());
 
             unityContainer.RegisterInstance(unityContainer);
 
@@ -114,6 +115,7 @@ namespace Applified.Utilities.ApplifiedAdmin
             commands.RegisterType(options => options.ListAvaliableSettings, typeof(ListAvaliableSettingsCommand));
             commands.RegisterType(options => options.MigrateFeatureDatabase, typeof(MigrateFeatureDatabaseCommand));
             commands.RegisterType(options => options.MigrateDatabase, typeof(MigrateDatabaseCommand));
+            commands.RegisterType(options => options.CreateEventSource, typeof(CreateEventSourceCommand));
 
             return commands;
         }

@@ -43,6 +43,10 @@ namespace Applified.Utilities.ApplifiedAdmin
             Description = "List all applications", GroupId = "commands")]
         public bool ListApplications { get; set; }
 
+        [CommandLineOption(Name = "create-event-source",
+            Description = "Creates a event source in windows eventlog. This command requires administrative privileges", GroupId = "commands")]
+        public bool CreateEventSource { get; set; }
+
         [CommandLineOption(Name = "migrate-feature-database",
             Description = "Migrates the feature database", GroupId = "commands")]
         public bool MigrateFeatureDatabase { get; set; }
