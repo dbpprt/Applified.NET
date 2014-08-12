@@ -106,14 +106,25 @@ namespace Applified.Core.Middleware
                         _executionCount++;
                         _executionLock.Release();
                     }
-                }
 
-                await Next.Invoke(context);
+                    await RedirectToCurrent(context);
+                }
+                else
+                {
+                    await Next.Invoke(context);
+                }
             }
             else
             {
                 await Next.Invoke(context);
             }
+        }
+
+        private Task RedirectToCurrent(IOwinContext context)
+        {
+            context.Response.Headers.Add("Location", new[] { context.Request.Path.ToString() });
+            context.Response.StatusCode = 302;
+            return Task.FromResult(0);
         }
     }
 }

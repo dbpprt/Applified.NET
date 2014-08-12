@@ -74,6 +74,8 @@
     <Compile Include="Commands\ListBindingsCommand.cs" />
     <Compile Include="Commands\ListApplicationsCommand.cs" />
     <Compile Include="Commands\ListAvaliableSettingsCommand.cs" />
+    <Compile Include="Commands\MigrateDatabaseCommand.cs" />
+    <Compile Include="Commands\MigrateFeatureDatabaseCommand.cs" />
     <Compile Include="Commands\SynchronizeFeaturesCommand.cs" />
     <Compile Include="Commands\SetGlobalFeatureSetting.cs" />
     <Compile Include="Commands\ListGlobalFeatureSettings.cs" />
@@ -86,11 +88,18 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="scripts\install-debug.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Applified.Common\Applified.Common.csproj">
       <Project>{86884F5C-B482-4986-8FD4-C3086BC0073F}</Project>
       <Name>Applified.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.DataAccess\Applified.Core.DataAccess.csproj">
+      <Project>{B741F5F2-7CDB-4FAB-BBC0-C30B61F32E9E}</Project>
+      <Name>Applified.Core.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Applified.Core.Entities\Applified.Core.Entities.csproj">
       <Project>{216E5512-316F-4109-8C32-055B3A7A657B}</Project>

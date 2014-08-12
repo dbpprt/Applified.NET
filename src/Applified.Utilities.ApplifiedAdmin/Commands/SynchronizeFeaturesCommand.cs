@@ -48,7 +48,15 @@ namespace Applified.Utilities.ApplifiedAdmin.Commands
         {
             Debugger.Launch();
 
-            await _setupService.InitializeIntegratedFeatures(Options.TargetDirectory);
+            var directory = Options.TargetDirectory;
+
+            if (string.IsNullOrEmpty(directory))
+            {
+                directory = AppDomain.CurrentDomain.BaseDirectory;
+                Console.WriteLine("No directory specified.. Using base directory {0}", directory);
+            }
+
+            await _setupService.InitializeIntegratedFeatures(directory);
 
             Console.WriteLine("Features synchronized");
 

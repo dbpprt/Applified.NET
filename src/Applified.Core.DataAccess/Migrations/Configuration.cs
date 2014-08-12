@@ -25,12 +25,12 @@ using Applified.Core.Entities.Infrastructure;
 
 namespace Applified.Core.DataAccess.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<EntityContext>
+    public sealed class EntityContextConfiguration : DbMigrationsConfiguration<EntityContext>
     {
-        public Configuration()
+        public EntityContextConfiguration()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationDataLossAllowed = false;
         }
 
         protected override void Seed(EntityContext context)

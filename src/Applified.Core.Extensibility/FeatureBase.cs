@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,5 +60,10 @@ namespace Applified.Core.Extensibility
         }
 
         public abstract Task<OwinMiddleware> UseAsync(Guid applicationId, OwinMiddleware next, IAppBuilder appBuilder, IDependencyScope scope);
+
+        public virtual DbMigrationsConfiguration GetMigrationsConfiguration()
+        {
+            return null;
+        } 
     }
 }

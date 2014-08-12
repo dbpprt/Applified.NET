@@ -115,7 +115,7 @@ namespace Applified.Common
             {
                 Key = mapping.Key,
                 DefaultValue = mapping.Value.Item1,
-                ValueType = mapping.Value.Item2,
+                ValueType = mapping.Value.Item2.Name,
                 Description = mapping.Value.Item3,
             }).ToList();
         } 
@@ -137,7 +137,7 @@ namespace Applified.Common
 
         public object DefaultValue { get; set; }
 
-        public Type ValueType { get; set; }
+        public string ValueType { get; set; }
 
         public string Description { get; set; }
     }

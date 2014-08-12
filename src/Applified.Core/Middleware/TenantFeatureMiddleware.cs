@@ -1,4 +1,4 @@
-#region Copyright (C) 2014 Applified.NET 
+#region Copyright (C) 2014 Applified.NET
 // Copyright (C) 2014 Applified.NET
 // http://www.applified.net
 
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -80,12 +81,23 @@ namespace Applified.Core.Middleware
                     continue;
                 }
 
-                var currentMiddleware = await instance.UseAsync(
-                    current.ApplicationId,
-                    lastMiddleware,
-                    _appBuilder,
-                    scope
-                    );
+                OwinMiddleware currentMiddleware = null;
+
+                try
+                {
+                    currentMiddleware = await instance.UseAsync(
+                        current.ApplicationId,
+                        lastMiddleware,
+                        _appBuilder,
+                        scope
+                        );
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    
+                    Console.WriteLine("Unable to load tenant feature {0}", feature.Name);
+                }
 
                 if (currentMiddleware != null || lastMiddleware == null)
                 {

@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="DevelopmentServerEnvironment.cs" />
+    <Compile Include="Handlers\RegisterGlobalFeatureDependenciesHandler.cs" />
     <Compile Include="Handlers\FeatureSynchronizationHandler.cs" />
     <Compile Include="MainUnityModule.cs" />
     <Compile Include="Middleware\ApplicationDeploymentProviderMiddleware.cs" />

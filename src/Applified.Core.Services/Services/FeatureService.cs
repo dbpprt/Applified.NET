@@ -184,12 +184,15 @@ namespace Applified.Core.Services.Services
                 .ToListAsync();
         }
 
-        public Task AddApplicationFeatureAsync(Guid featureId)
+        public async Task AddApplicationFeatureAsync(Guid featureId)
         {
-            return _featureApplicationMappings.InsertAsync(new FeatureApplicationMapping
+            if (! await _featureApplicationMappings.Query().AnyAsync(mapping => mapping.FeatureId == featureId))
             {
-                FeatureId = featureId
-            });
+                await _featureApplicationMappings.InsertAsync(new FeatureApplicationMapping
+                {
+                    FeatureId = featureId
+                });
+            }
         }
 
         public async Task DeleteApplicationFeatureAsync(Guid featureId)

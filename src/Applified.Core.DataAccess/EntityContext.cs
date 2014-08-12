@@ -22,6 +22,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Applified.Common;
 using Applified.Core.DataAccess.Contracts;
 using Applified.Core.DataAccess.Conventions;
 using Applified.Core.Entities.Identity;
@@ -36,41 +37,7 @@ namespace Applified.Core.DataAccess
             Database.SetInitializer(new NullDatabaseInitializer<EntityContext>());
         }
 
-        public DbSet<StoredObject> StoredObjects { get; set; }
-
-        public DbSet<Application> Applications { get; set; }
-
-        public DbSet<WellKnownApplication> WellKnownApplications { get; set; } 
-
-        public DbSet<Binding> Bindings { get; set; }
-
-        public DbSet<Deployment> Deployments { get; set; }
-
-        public DbSet<UserAccount> UserAccounts { get; set; }
-
-        public DbSet<UserClaim> Claims { get; set; }
-
-        public DbSet<Role> Roles { get; set; }
-
-        public DbSet<UserLogin> UserLogins { get; set; }
-
-        public DbSet<UserAccountRoleMapping> UserAccountRoleMappings { get; set; }
-
-        public DbSet<OAuthClient> OAuthClients { get; set; }
-
-        public DbSet<ExternalOAuthProvider> ExternalOAuthProviders { get; set; }
-
-        public DbSet<ApplicationTemplate> ApplicationTemplates { get; set; }
-
-        public DbSet<Feature> Features { get; set; }
-
-        public DbSet<GlobalFeatureSetting> GlobalFeatureSettings { get; set; }
-
-        public DbSet<FeatureApplicationMapping> FeatureApplicationMappings { get; set; }
-
-        public DbSet<ApplicationFeatureSetting> ApplicationFeatureSettings { get; set; } 
-
-        public EntityContext()
+        public EntityContext() : base("EntityContext")
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.AutoDetectChangesEnabled = false;
@@ -81,6 +48,17 @@ namespace Applified.Core.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<StoredObject>().ToTable("core.StoredObjects");
+            modelBuilder.Entity<Application>().ToTable("core.Applications");
+            modelBuilder.Entity<WellKnownApplication>().ToTable("core.WellKnownApplications");
+            modelBuilder.Entity<Binding>().ToTable("core.Bindings");
+            modelBuilder.Entity<Deployment>().ToTable("core.Deployments");
+            modelBuilder.Entity<ApplicationTemplate>().ToTable("core.ApplicationTemplates");
+            modelBuilder.Entity<GlobalFeatureSetting>().ToTable("core.GlobalFeatureSettings");
+            modelBuilder.Entity<FeatureApplicationMapping>().ToTable("core.FeatureApplicationMappings");
+            modelBuilder.Entity<ApplicationFeatureSetting>().ToTable("core.ApplicationFeatureSettings");
+            modelBuilder.Entity<Feature>().ToTable("core.Features");
 
             modelBuilder.Conventions.Add(new DateTime2Convention());
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

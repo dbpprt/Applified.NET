@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Web.Http;
+using Applified.Common;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.Identity;
@@ -39,15 +40,6 @@ namespace Applified.Core
 {
     public static class ApplicationBuilder
     {
-        public class Test : IDisposable
-        {
-            public void Dispose()
-            {
-                Debugger.Break();
-
-            }
-        }
-
         public static void Build(IAppBuilder app)
         {
             app.UseStageMarker(PipelineStage.MapHandler);
@@ -59,9 +51,9 @@ namespace Applified.Core
 
             app.Use<ApplicationEventMiddleware>(container);
 
-            app.Use<DeploymentMiddleware>();
+            //app.Use<DeploymentMiddleware>();
 
-            app.Use<ApplicationDeploymentProviderMiddleware>();
+            //app.Use<ApplicationDeploymentProviderMiddleware>();
 
             app.Use<TenantFeatureMiddleware>(app);
 
@@ -69,9 +61,9 @@ namespace Applified.Core
 
             //app.Use<MetaWeblogService>();
 
-            app.UseWebApi(
-                app.PrepareWebapiAdapter(ApiHttpConfiguration())
-                );
+            //app.UseWebApi(
+            //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
+            //    );
 
             //app.Use<MultiTenantFileServerMiddleware>(null, "C:\\Deployments");
         }

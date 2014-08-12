@@ -15,7 +15,7 @@ md .nuget
 copy %CACHED_NUGET% .nuget\nuget.exe > nul
 
 :restore
-IF EXIST packages\KoreBuild goto run
+IF EXIST packages\psake* goto run
 .nuget\NuGet.exe install psake -o packages -nocache
 
 :run

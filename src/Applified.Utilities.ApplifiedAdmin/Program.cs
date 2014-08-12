@@ -19,9 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Applified.Common.Unity;
 using Applified.Core;
@@ -90,10 +87,12 @@ namespace Applified.Utilities.ApplifiedAdmin
             unityContainer.RegisterType(typeof(SetGlobalFeatureSetting), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(SynchronizeFeaturesCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(ListBindingsCommand), new HierarchicalLifetimeManager());
-            unityContainer.RegisterType(typeof (AddBindingCommand), new HierarchicalLifetimeManager());
-            unityContainer.RegisterType(typeof (EnableFeatureCommand), new HierarchicalLifetimeManager());
-            unityContainer.RegisterType(typeof (DisableFeatureCommand), new HierarchicalLifetimeManager());
-            unityContainer.RegisterType(typeof (ListAvaliableSettingsCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(AddBindingCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(EnableFeatureCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(DisableFeatureCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(ListAvaliableSettingsCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(MigrateFeatureDatabaseCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof(MigrateDatabaseCommand), new HierarchicalLifetimeManager());
 
             unityContainer.RegisterInstance(unityContainer);
 
@@ -113,6 +112,8 @@ namespace Applified.Utilities.ApplifiedAdmin
             commands.RegisterType(options => options.EnableFeature, typeof(EnableFeatureCommand));
             commands.RegisterType(options => options.DisableFeature, typeof(DisableFeatureCommand));
             commands.RegisterType(options => options.ListAvaliableSettings, typeof(ListAvaliableSettingsCommand));
+            commands.RegisterType(options => options.MigrateFeatureDatabase, typeof(MigrateFeatureDatabaseCommand));
+            commands.RegisterType(options => options.MigrateDatabase, typeof(MigrateDatabaseCommand));
 
             return commands;
         }

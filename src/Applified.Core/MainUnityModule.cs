@@ -49,13 +49,14 @@ namespace Applified.Core
                 .RegisterType<IApplicationService, ApplicationService>(new HierarchicalLifetimeManager())
                 .RegisterType<ISetupService, SetupService>(new HierarchicalLifetimeManager())
 
-#if DEBUG
                 .RegisterType<IServerEnvironment, DevelopmentServerEnvironment>(new HierarchicalLifetimeManager())
-#endif
 
-                .RegisterType<IApplicationEventHandler, FeatureSynchronizationHandler>(
-                    "FeatureSynchronizationHandler", 
+                .RegisterNamed<IApplicationEventHandler, RegisterGlobalFeatureDependenciesHandler>(
+                    new HierarchicalLifetimeManager())
+                .RegisterNamed<IApplicationEventHandler, FeatureSynchronizationHandler>(
                     new HierarchicalLifetimeManager());
+
+
         }
     }
 }

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace Applified.Utilities.ApplifiedAdmin.Commands
 
         public override async Task<int> Execute()
         {
+            
             var feature = await _featureService.FindFeature(Options.TargetFeature);
             if (feature == null)
             {

@@ -20,6 +20,7 @@
 
 using System;
 using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Utility;
 
 namespace Applified.Common.Unity
 {
@@ -31,6 +32,20 @@ namespace Applified.Common.Unity
             module.RegisterDependencies(container);
 
             return container;
+        }
+
+        public static IUnityContainer RegisterModule(this IUnityContainer container, IUnityModule module) 
+        {
+            module.RegisterDependencies(container);
+
+            return container;
+        }
+
+        public static IUnityContainer RegisterNamed<TFrom, TTo>(this IUnityContainer container, LifetimeManager lifetimeManager,
+                                                               params InjectionMember[] injectionMembers) where TTo : TFrom
+        {
+            Guard.ArgumentNotNull(container, "container");
+            return container.RegisterType(typeof(TFrom), typeof(TTo), typeof(TTo).Name, lifetimeManager, injectionMembers);
         }
     }
 }

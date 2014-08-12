@@ -43,6 +43,14 @@ namespace Applified.Utilities.ApplifiedAdmin
             Description = "List all applications", GroupId = "commands")]
         public bool ListApplications { get; set; }
 
+        [CommandLineOption(Name = "migrate-feature-database",
+            Description = "Migrates the feature database", GroupId = "commands")]
+        public bool MigrateFeatureDatabase { get; set; }
+
+        [CommandLineOption(Name = "migrate-database",
+            Description = "Migrates the database", GroupId = "commands")]
+        public bool MigrateDatabase { get; set; }
+
         [CommandLineOption(Name = "list-features",
             Description = "List all avaliable features", GroupId = "commands")]
         public bool ListFeatures { get; set; }
