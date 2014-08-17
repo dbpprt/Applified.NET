@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.AspNet.Loader.IIS.1.0.0-alpha1\build\net45\Microsoft.AspNet.Loader.IIS.props" Condition="Exists('..\packages\Microsoft.AspNet.Loader.IIS.1.0.0-alpha1\build\net45\Microsoft.AspNet.Loader.IIS.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Applified.IntegratedFeatures.Identity</RootNamespace>
+    <AssemblyName>Applified.IntegratedFeatures.Identity</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>d84b15c3</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0-alpha1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0-alpha1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0-rc2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.IIS">
+      <HintPath>..\packages\Microsoft.Owin.Host.IIS.1.0.0-alpha1\lib\net45\Microsoft.Owin.Host.IIS.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.0-rc2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0-rc2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0-rc2\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.0-rc2\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0-rc2\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0-rc2\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin.Security.Providers">
+      <HintPath>..\packages\Owin.Security.Providers.1.7.0\lib\net45\Owin.Security.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Http, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IdentityFeature.cs" />
+    <Compile Include="Common\DataProtectionProvider.cs" />
+    <Compile Include="Common\DataProtector.cs" />
+    <Compile Include="Common\IdentityBuilder.cs" />
+    <Compile Include="Common\IdentityUnityModule.cs" />
+    <Compile Include="Common\ProviderFactory.cs" />
+    <Compile Include="Common\SecurityStampValidator.cs" />
+    <Compile Include="Common\TenantDemandAuthenticationMiddleware.cs" />
+    <Compile Include="DataAccess\MigrationContext.cs" />
+    <Compile Include="DataAccess\ModelBuilder.cs" />
+    <Compile Include="Entities\ExternalOAuthProvider.cs" />
+    <Compile Include="Entities\OAuthApplicationType.cs" />
+    <Compile Include="Entities\OAuthClient.cs" />
+    <Compile Include="Entities\OAuthGrant.cs" />
+    <Compile Include="Entities\RefreshToken.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\UserAccount.cs" />
+    <Compile Include="Entities\UserAccountRoleMapping.cs" />
+    <Compile Include="Entities\UserClaim.cs" />
+    <Compile Include="Entities\UserLogin.cs" />
+    <Compile Include="Common\Managers\RoleManager.cs" />
+    <Compile Include="Common\Managers\SignInManager.cs" />
+    <Compile Include="Common\Managers\UserManager.cs" />
+    <Compile Include="Migrations\201408171135041_Initial.cs" />
+    <Compile Include="Migrations\201408171135041_Initial.Designer.cs">
+      <DependentUpon>201408171135041_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\Providers\AuthorizationServerProvider.cs" />
+    <Compile Include="Common\Providers\IdentityAuthorizationServerProvider.cs" />
+    <Compile Include="Common\Providers\IdentityRefreshTokenProvider.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Common\Stores\RoleStore.cs" />
+    <Compile Include="Common\Stores\UserStore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Applified.Common.OwinDependencyInjection\Applified.Common.OwinDependencyInjection.csproj">
+      <Project>{3B993BE4-4F21-40A6-ADFF-DA1E650F7EF3}</Project>
+      <Name>Applified.Common.OwinDependencyInjection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Common\Applified.Common.csproj">
+      <Project>{86884F5C-B482-4986-8FD4-C3086BC0073F}</Project>
+      <Name>Applified.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.DataAccess\Applified.Core.DataAccess.csproj">
+      <Project>{B741F5F2-7CDB-4FAB-BBC0-C30B61F32E9E}</Project>
+      <Name>Applified.Core.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Entities\Applified.Core.Entities.csproj">
+      <Project>{216E5512-316F-4109-8C32-055B3A7A657B}</Project>
+      <Name>Applified.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.Extensibility\Applified.Core.Extensibility.csproj">
+      <Project>{FE034BC2-887D-4F08-9DB8-A556BF370FA6}</Project>
+      <Name>Applified.Core.Extensibility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Applified.Core.ServiceContracts\Applified.Core.ServiceContracts.csproj">
+      <Project>{C1402041-F0E4-433B-A761-91B40C22405A}</Project>
+      <Name>Applified.Core.ServiceContracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201408171135041_Initial.resx">
+      <DependentUpon>201408171135041_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.AspNet.Loader.IIS.1.0.0-alpha1\build\net45\Microsoft.AspNet.Loader.IIS.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.AspNet.Loader.IIS.1.0.0-alpha1\build\net45\Microsoft.AspNet.Loader.IIS.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
