@@ -26,7 +26,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
 using Applified.Common;
+using Applified.Common.Configuration;
 using Applified.Common.Unity;
+using Applified.Core.Entities.Infrastructure;
 using Microsoft.Owin;
 using Microsoft.Practices.Unity;
 using Owin;
@@ -48,7 +50,17 @@ namespace Applified.Core.Extensibility
 
         public abstract string AssemblyName { get; }
 
+        public virtual FeatureScope Scope
+        {
+            get
+            {
+                return FeatureScope.Application;
+            }
+        }
+
         public virtual void RegisterDependencies(IUnityContainer container) { }
+
+        public virtual void Build(IAppBuilder app) { }
 
         public virtual void OnStartup(IAppBuilder app) { }
 

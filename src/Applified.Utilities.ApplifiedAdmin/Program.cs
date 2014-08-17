@@ -80,6 +80,10 @@ namespace Applified.Utilities.ApplifiedAdmin
         {
             unityContainer.RegisterModule<MainUnityModule>();
 
+            // not perfect but required to have a valid server environment. 
+            // this requires that appadm.exe is in the same directory like the rest of the server
+            ApplicationBuilder.InitializeEnvironment(unityContainer);
+
             unityContainer.RegisterType(typeof(ListApplicationsCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(CreateApplicationCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(ListFeaturesCommand), new HierarchicalLifetimeManager());
@@ -94,6 +98,8 @@ namespace Applified.Utilities.ApplifiedAdmin
             unityContainer.RegisterType(typeof(MigrateFeatureDatabaseCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof(MigrateDatabaseCommand), new HierarchicalLifetimeManager());
             unityContainer.RegisterType(typeof (CreateEventSourceCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof (EnableFarmFeatureCommand), new HierarchicalLifetimeManager());
+            unityContainer.RegisterType(typeof (DisableFarmFeatureCommand), new HierarchicalLifetimeManager());
 
             unityContainer.RegisterInstance(unityContainer);
 
@@ -116,6 +122,8 @@ namespace Applified.Utilities.ApplifiedAdmin
             commands.RegisterType(options => options.MigrateFeatureDatabase, typeof(MigrateFeatureDatabaseCommand));
             commands.RegisterType(options => options.MigrateDatabase, typeof(MigrateDatabaseCommand));
             commands.RegisterType(options => options.CreateEventSource, typeof(CreateEventSourceCommand));
+            commands.RegisterType(options => options.EnableFarmFeature, typeof (EnableFarmFeatureCommand));
+            commands.RegisterType(options => options.DisableFarmFeature, typeof(DisableFarmFeatureCommand));
 
             return commands;
         }

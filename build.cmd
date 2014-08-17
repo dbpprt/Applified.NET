@@ -19,7 +19,7 @@ IF EXIST packages\psake* goto run
 .nuget\NuGet.exe install psake -o packages -nocache
 
 :run
-powershell -Command "& {Import-Module .\packages\psake.4.3.2\tools\psake.psm1; Invoke-psake .\scripts\default.ps1 -parameters @{"buildConfiguration"='Release';} }" 
+powershell -Command "& {Import-Module .\packages\psake.4.3.2\tools\psake.psm1; Invoke-psake .\scripts\default.ps1 %1 -parameters @{"buildConfiguration"='Release';} }" 
 pause 
 
 

@@ -82,7 +82,7 @@ namespace Applified.Core.Middleware
             }
 
             var featureService = scope.Resolve<IFeatureService>();
-            var registeredFeatures = await featureService.GetFeaturesAsync();
+            var registeredFeatures = await featureService.GetActivatedFeaturesAsync();
 
             registeredFeatures = registeredFeatures
                 .OrderByDescending(feature => feature.ExecutionOrderKey)

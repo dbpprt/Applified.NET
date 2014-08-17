@@ -19,19 +19,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
+using System.IO;
 using System.Web.Http;
-using Applified.Common;
 using Applified.Common.Logging;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
-using Applified.Core.Identity;
 using Applified.Core.Middleware;
 using Applified.Core.ServiceContracts;
-using Microsoft.Owin.Diagnostics;
 using Microsoft.Owin.Extensions;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Serialization;
@@ -41,6 +35,8 @@ namespace Applified.Core
 {
     public static class ApplicationBuilder
     {
+        public const string ConfigurationFileName = "server.json";
+
         public static void Build(IAppBuilder app)
         {
             app.UseStageMarker(PipelineStage.MapHandler);
@@ -48,9 +44,15 @@ namespace Applified.Core
             var container = new UnityContainer()
                 .RegisterModule<MainUnityModule>();
 
+            InitializeEnvironment(container);
+
             app.UseContainer(new UnityDependencyResolver(container));
 
             app.Use<ApplicationEventMiddleware>(app, container);
+
+            InitializeFarmFeatures(app, container);
+
+
 
             app.Use<DeploymentMiddleware>();
 
@@ -58,13 +60,7 @@ namespace Applified.Core
 
             app.Use<TenantFeatureMiddleware>(app);
 
-            //app.Use<ManagementMiddleware>();
-
-            //app.Use<MetaWeblogService>();
-
-            //app.UseWebApi(
-            //    app.PrepareWebapiAdapter(ApiHttpConfiguration())
-            //    );
+            
 
             container.Resolve<ILog>()
                 .Write("Server started successfully and is ready to receive requests!")
@@ -72,40 +68,56 @@ namespace Applified.Core
                 .Save();
         }
 
-
-        private static HttpConfiguration ApiHttpConfiguration()
+        public static void InitializeFarmFeatures(IAppBuilder app, IUnityContainer container)
         {
-            var config = new HttpConfiguration();
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            config.MapHttpAttributeRoutes();
+            using (var scope = container.CreateChildContainer())
+            {
+                var featureService = scope.Resolve<IFeatureService>();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+                var farmFeatures = featureService.GetActivatedFarmFeatures();
 
-            return config;
+                foreach (var farmFeature in farmFeatures)
+                {
+                    var instance = featureService.InstantiateFeature(farmFeature.Id);
+
+                    if (instance != null)
+                    {
+                        instance.RegisterDependencies(container);
+                        instance.Build(app);
+                    }
+                }
+            }
         }
 
-        private static HttpRouteCollection StaticRouteConfiguration()
+        public static void InitializeEnvironment(IUnityContainer container)
         {
-            var config = new HttpRouteCollection();
+            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationFileName);
+            var settings = new Settings(filePath);
 
-            config.IgnoreRoute("Webapi", "api/{*data}");
+            if (!File.Exists(filePath))
+            {
+                try
+                {
+                    settings.Save();
 
-            config.MapHttpRoute("Windows live writer manifest",
-                "wlwmanifest.xml",
-                new { rewrite = "/assets/wlwmanifest.xml" }
-            );
+                    container.Resolve<ILog>()
+                        .Write("No server configuration file found at " + filePath + ". Using default settings!")
+                        .IsError()
+                        .Save();
+                }
+                catch (Exception exception)
+                {
+                    exception
+                        .ToEvent()
+                        .SetMessage(
+                            "Unable to find a server configuration and unable to create a default server configuration!")
+                        .IsCritical()
+                        .Save(container.Resolve<ILog>());
+                }
+            }
 
-            config.MapHttpRoute("Angular HTML5 Navigation",
-                "{*data}",
-                new { rewrite = "/index.html" },
-                new { data = @".*?$(?<!\.js|.css|.eot)" }
-            );
-
-            return config;
+            var serverEnvironment = new ServerEnvironment(settings);
+            container.RegisterInstance<IServerEnvironment>(serverEnvironment);
         }
     }
 }

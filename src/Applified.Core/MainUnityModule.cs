@@ -51,7 +51,7 @@ namespace Applified.Core
                 .RegisterType<IApplicationService, ApplicationService>(new HierarchicalLifetimeManager())
                 .RegisterType<ISetupService, SetupService>(new HierarchicalLifetimeManager())
 
-                .RegisterType<IServerEnvironment, DevelopmentServerEnvironment>(new HierarchicalLifetimeManager())
+                .RegisterType<IServerEnvironment, ServerEnvironment>(new HierarchicalLifetimeManager())
 
                 .RegisterType<ILog, AggregateLog>(new TransientLifetimeManager())
                 .RegisterNamed<ILogAdapter, WindowsEventLogAdapter>(new TransientLifetimeManager())

@@ -89,7 +89,8 @@ namespace Applified.Core.Services.Services
                         VersionIdentifier = loadedFeature.Version,
                         StoredObjectId = null,
                         StoredObject = null,
-                        ExecutionOrderKey = loadedFeature.ExecutionOrderKey
+                        ExecutionOrderKey = loadedFeature.ExecutionOrderKey,
+                        Scope = loadedFeature.Scope
                     };
 
                     _features.Insert(newFeature, false);
@@ -103,6 +104,7 @@ namespace Applified.Core.Services.Services
                     existing.StoredObjectId = null;
                     existing.AssemblyName = loadedFeature.AssemblyName;
                     existing.ExecutionOrderKey = loadedFeature.ExecutionOrderKey;
+                    existing.Scope = loadedFeature.Scope;
 
                     _features.Update(existing, false);
                 }

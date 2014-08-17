@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationBuilder.cs" />
-    <Compile Include="DevelopmentServerEnvironment.cs" />
+    <Compile Include="ServerEnvironment.cs" />
     <Compile Include="Handlers\RegisterGlobalFeatureDependenciesHandler.cs" />
     <Compile Include="Handlers\FeatureSynchronizationHandler.cs" />
     <Compile Include="MainUnityModule.cs" />
@@ -110,6 +110,7 @@
     <Compile Include="Middleware\TenantFeatureMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\MultiTenancyContextHandler.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

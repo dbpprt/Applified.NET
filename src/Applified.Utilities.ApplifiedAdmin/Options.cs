@@ -87,6 +87,14 @@ namespace Applified.Utilities.ApplifiedAdmin
             Description = "Enables a feature for a given application", GroupId = "commands")]
         public bool EnableFeature { get; set; }
 
+        [CommandLineOption(Name = "enable-farm-feature",
+            Description = "Enables a farm feature", GroupId = "commands")]
+        public bool EnableFarmFeature { get; set; }
+
+        [CommandLineOption(Name = "disable-farm-feature",
+            Description = "Disables a farm feature", GroupId = "commands")]
+        public bool DisableFarmFeature { get; set; }
+
         [CommandLineOption(Name = "disable-feature",
             Description = "Disables a feature for a given application", GroupId = "commands")]
         public bool DisableFeature { get; set; }

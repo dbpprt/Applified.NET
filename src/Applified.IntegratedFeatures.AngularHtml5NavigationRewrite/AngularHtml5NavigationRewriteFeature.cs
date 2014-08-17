@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
 using Applified.Common;
+using Applified.Common.Configuration;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.Extensibility;
 using Applified.Core.ServiceContracts;

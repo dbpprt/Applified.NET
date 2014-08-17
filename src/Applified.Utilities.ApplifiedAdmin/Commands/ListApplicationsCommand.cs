@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Applified.Common;
+using Applified.Common.Utilities;
 using Applified.Core.ServiceContracts;
 
 namespace Applified.Utilities.ApplifiedAdmin.Commands

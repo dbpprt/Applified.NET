@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using Applified.Common;
+using Applified.Common.Configuration;
 
 namespace Applified.IntegratedFeatures.AngularHtml5NavigationRewrite
 {

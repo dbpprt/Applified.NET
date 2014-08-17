@@ -23,16 +23,20 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
 using Applified.Common;
+using Applified.Common.Configuration;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Common.Unity;
 using Applified.Core.DataAccess.Contracts;
 using Applified.Core.Extensibility;
+using Applified.Core.ServiceContracts;
 using Applified.IntegratedFeatures.Blog.DataAccess;
 using Applified.IntegratedFeatures.Blog.Entities;
+using Applified.IntegratedFeatures.Blog.Middlewares;
 using Applified.IntegratedFeatures.Blog.Migrations;
 using Microsoft.Owin;
 using Microsoft.Practices.Unity;
@@ -64,10 +68,10 @@ namespace Applified.IntegratedFeatures.Blog
             IAppBuilder builder,
             IDependencyScope scope)
         {
-            var posts = scope.Resolve<IRepository<Post>>();
-            var data = await posts.Query().ToListAsync();
+            var featureService = scope.Resolve<IFeatureService>();
+            var settings = await featureService.GetSettingsAsync(FeatureId);
 
-            return null;
+            return new BlogFeatureMiddleware(next, builder, new Settings(settings));
         }
 
         public override string Name

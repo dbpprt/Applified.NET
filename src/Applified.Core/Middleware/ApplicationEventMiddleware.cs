@@ -28,6 +28,7 @@ using System.Web.Http.Dependencies;
 using Applified.Common;
 using Applified.Common.Logging;
 using Applified.Common.OwinDependencyInjection;
+using Applified.Common.Utilities;
 using Applified.Core.Extensibility.Contracts;
 using Microsoft.Owin;
 using Microsoft.Practices.ObjectBuilder2;

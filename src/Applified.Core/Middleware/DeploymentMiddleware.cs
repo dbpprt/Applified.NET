@@ -25,6 +25,7 @@ using System.Web.Http;
 using System.Web.Http.Dependencies;
 using Applified.Common;
 using Applified.Common.OwinDependencyInjection;
+using Applified.Common.Utilities;
 using Applified.Core.Entities.Infrastructure;
 using Applified.Core.Services.Services;
 using Microsoft.Owin;

@@ -46,6 +46,7 @@ namespace Applified.Core.Services.Services
         private readonly IRepository<FeatureApplicationMapping> _featureApplicationMappings;
         private readonly IRepository<GlobalFeatureSetting> _globalFeatureSettings;
         private readonly IRepository<ApplicationFeatureSetting> _applicationFeatureSettings;
+        private readonly IRepository<ActiveFarmFeature> _activatedFarmFeatures;
         private readonly IStorageService _storageService;
         private readonly IServerEnvironment _serverEnvironment;
         private readonly IUnitOfWork _context;
@@ -55,6 +56,7 @@ namespace Applified.Core.Services.Services
             IRepository<FeatureApplicationMapping> featureApplicationMappings,
             IRepository<GlobalFeatureSetting> globalFeatureSettings,
             IRepository<ApplicationFeatureSetting> applicationFeatureSettings,
+            IRepository<ActiveFarmFeature> activatedFarmFeatures,
             IStorageService storageService,
             IServerEnvironment serverEnvironment,
             IUnitOfWork context
@@ -64,6 +66,7 @@ namespace Applified.Core.Services.Services
             _featureApplicationMappings = featureApplicationMappings;
             _globalFeatureSettings = globalFeatureSettings;
             _applicationFeatureSettings = applicationFeatureSettings;
+            _activatedFarmFeatures = activatedFarmFeatures;
             _storageService = storageService;
             _serverEnvironment = serverEnvironment;
             _context = context;
@@ -88,10 +91,24 @@ namespace Applified.Core.Services.Services
                 .ToListAsync();
         }
 
+        public Task<List<Feature>> GetActivatedFeaturesAsync()
+        {
+            return _featureApplicationMappings.Query()
+                .Include(entity => entity.Feature)
+                .Select(entity => entity.Feature)
+                .ToListAsync();
+        }
+
         public Task<Feature> GetFeatureAsync(Guid featureId)
         {
             return _features.Query()
                 .FirstOrDefaultAsync(entity => entity.Id == featureId);
+        }
+
+        public Feature GetFeature(Guid featureId)
+        {
+            return _features.Query()
+                .FirstOrDefault(entity => entity.Id == featureId);
         }
 
         public async Task<Dictionary<string, string>> GetGlobalFeatureSettingsAsync(Guid featureId)
@@ -237,12 +254,12 @@ namespace Applified.Core.Services.Services
             return applicationSettings;
         }
 
-        private Task<Assembly> LoadIntegratedFeatureAssembly(Feature feature)
+        private Assembly LoadIntegratedFeatureAssembly(Feature feature)
         {
             // we assume that integrated features are located in a global scope... gac, basedir, etc..
             //Assembly.l
             var assembly = Assembly.Load(feature.AssemblyName);
-            return Task.FromResult(assembly);
+            return assembly;
         }
 
         public async Task<FeatureBase> InstantiateFeatureAsync(Guid featureId)
@@ -254,12 +271,17 @@ namespace Applified.Core.Services.Services
                 return null;
             }
 
+            return InstantiateInternal(feature);
+        }
+
+        private FeatureBase InstantiateInternal(Feature feature)
+        {
             Assembly assembly = null;
 
             switch (feature.FeatureType)
             {
                 case FeatureType.Integrated:
-                    assembly = await LoadIntegratedFeatureAssembly(feature);
+                    assembly = LoadIntegratedFeatureAssembly(feature);
                     break;
 
                 default:
@@ -288,6 +310,92 @@ namespace Applified.Core.Services.Services
             }
 
             return Activator.CreateInstance(types.First()) as FeatureBase;
+        }
+
+        public List<Feature> GetFarmFeatures()
+        {
+            return _features.Query()
+                .Where(feature => feature.Scope == FeatureScope.Farm || feature.Scope == FeatureScope.FarmAndApplication)
+                .ToList();
+        }
+
+        public void EnableFarmFeature(Guid featureId)
+        {
+            if (!_activatedFarmFeatures.Query().Any(entity => entity.FeatureId == featureId))
+            {
+                _activatedFarmFeatures.Insert(new ActiveFarmFeature
+                {
+                    FeatureId = featureId
+                });
+            }
+        }
+
+        public void DisableFarmFeature(Guid featureId)
+        {
+            if (_activatedFarmFeatures.Query().Any(entity => entity.FeatureId == featureId))
+            {
+                _activatedFarmFeatures.Delete(new ActiveFarmFeature
+                {
+                    FeatureId = featureId
+                });
+            }
+        }
+
+        public Task<List<Feature>> GetFarmFeaturesAsync()
+        {
+            return _features.Query()
+                .Where(feature => feature.Scope == FeatureScope.Farm || feature.Scope == FeatureScope.FarmAndApplication)
+                .ToListAsync();
+        }
+
+        public List<Feature> GetActivatedFarmFeatures()
+        {
+            return _activatedFarmFeatures.Query()
+                .Include(entity => entity.Feature)
+                .Select(entity => entity.Feature)
+                .ToList();
+        }
+
+        public Task<List<Feature>> GetActivatedFarmFeaturesAsync()
+        {
+            return _activatedFarmFeatures.Query()
+                .Include(entity => entity.Feature)
+                .Select(entity => entity.Feature)
+                .ToListAsync();
+        }
+
+        public async Task EnableFarmFeatureAsync(Guid featureId)
+        {
+            if (!await _activatedFarmFeatures.Query().AnyAsync(entity => entity.FeatureId == featureId))
+            {
+                await _activatedFarmFeatures.InsertAsync(new ActiveFarmFeature
+                {
+                    FeatureId = featureId
+                });
+            }
+        }
+
+        public async Task DisableFarmFeatureAsync(Guid featureId)
+        {
+            if (await _activatedFarmFeatures.Query().AnyAsync(entity => entity.FeatureId == featureId))
+            {
+                await _activatedFarmFeatures.DeleteAsync(new ActiveFarmFeature
+                {
+                    FeatureId = featureId
+                });
+            }
+        }
+
+        public FeatureBase InstantiateFeature(Guid featureId)
+        {
+            var feature = GetFeature(featureId);
+
+            if (feature == null)
+            {
+                return null;
+            }
+
+            return InstantiateInternal(feature);
         }
 
         private Task<ConfigurationModel> GetFeatureConfigurationAsync(byte[] zipArchive)

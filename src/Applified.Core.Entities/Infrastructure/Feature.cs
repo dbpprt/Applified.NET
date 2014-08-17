@@ -56,5 +56,7 @@ namespace Applified.Core.Entities.Infrastructure
 
         [ForeignKey("StoredObjectId")]
         public StoredObject StoredObject { get; set; }
+
+        public FeatureScope Scope { get; set; }
     }
 }

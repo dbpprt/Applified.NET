@@ -22,10 +22,8 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Applified.Common;
 using Applified.Core.DataAccess.Contracts;
 using Applified.Core.DataAccess.Conventions;
-using Applified.Core.Entities.Identity;
 using Applified.Core.Entities.Infrastructure;
 
 namespace Applified.Core.DataAccess
@@ -59,6 +57,7 @@ namespace Applified.Core.DataAccess
             modelBuilder.Entity<FeatureApplicationMapping>().ToTable("core.FeatureApplicationMappings");
             modelBuilder.Entity<ApplicationFeatureSetting>().ToTable("core.ApplicationFeatureSettings");
             modelBuilder.Entity<Feature>().ToTable("core.Features");
+            modelBuilder.Entity<ActiveFarmFeature>().ToTable("core.ActiveFarmFeatures");
 
             modelBuilder.Conventions.Add(new DateTime2Convention());
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

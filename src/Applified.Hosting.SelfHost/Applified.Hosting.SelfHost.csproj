@@ -139,6 +139,10 @@
       <Project>{2b1fcdc1-49c9-40a5-8d84-c134772e1d1c}</Project>
       <Name>Applified.IntegratedFeatures.ConsoleLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Applified.IntegratedFeatures.Identity\Applified.IntegratedFeatures.Identity.csproj">
+      <Project>{7a3dfada-5e18-46f7-8b90-781c2c5bbe82}</Project>
+      <Name>Applified.IntegratedFeatures.Identity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Applified.IntegratedFeatures.PageOfDeath\Applified.IntegratedFeatures.PageOfDeath.csproj">
       <Project>{3a440b69-7c6f-4a11-9849-dc661dc83500}</Project>
       <Name>Applified.IntegratedFeatures.PageOfDeath</Name>

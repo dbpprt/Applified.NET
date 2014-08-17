@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Applified.Common.Utilities;
 
 namespace Applified.Common.Logging.WindowsEventLog
 {

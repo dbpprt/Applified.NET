@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
 using Applified.Common;
+using Applified.Common.Configuration;
 using Applified.Core.Extensibility;
 using Microsoft.Owin;
 using Owin;

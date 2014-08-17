@@ -34,6 +34,10 @@ namespace Applified.Core.ServiceContracts
 
         Task<List<Feature>> GetFeaturesAsync();
 
+        Feature GetFeature(Guid featureId);
+
+        Task<List<Feature>> GetActivatedFeaturesAsync();
+
         Task<Feature> GetFeatureAsync(Guid featureId);
 
         Task<Dictionary<string, string>> GetGlobalFeatureSettingsAsync(Guid featureId);
@@ -63,5 +67,23 @@ namespace Applified.Core.ServiceContracts
         Task<Dictionary<string, string>> GetSettingsAsync(Guid featureId);
 
         Task<FeatureBase> InstantiateFeatureAsync(Guid featureId);
+
+        List<Feature> GetFarmFeatures();
+
+        void EnableFarmFeature(Guid featureId);
+
+        void DisableFarmFeature(Guid featureId);
+
+        Task<List<Feature>> GetFarmFeaturesAsync();
+
+        List<Feature> GetActivatedFarmFeatures();
+
+        Task<List<Feature>> GetActivatedFarmFeaturesAsync(); 
+
+        Task EnableFarmFeatureAsync(Guid featureId);
+
+        Task DisableFarmFeatureAsync(Guid featureId);
+
+        FeatureBase InstantiateFeature(Guid featureId);
     }
 }

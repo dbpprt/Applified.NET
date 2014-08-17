@@ -19,10 +19,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Applified.Common.OwinDependencyInjection;
 using Applified.Core.ServiceContracts;

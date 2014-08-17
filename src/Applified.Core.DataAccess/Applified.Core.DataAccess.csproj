@@ -55,6 +55,10 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Conventions\DateTime2Convention.cs" />
     <Compile Include="EntityContext.cs" />
+    <Compile Include="Migrations\201408171515586_AddedFarmFeatures.cs" />
+    <Compile Include="Migrations\201408171515586_AddedFarmFeatures.Designer.cs">
+      <DependentUpon>201408171515586_AddedFarmFeatures.cs</DependentUpon>
+    </Compile>
     <Compile Include="PluggableEntityContext.cs" />
     <Compile Include="Migrations\201408121115548_Initial.cs" />
     <Compile Include="Migrations\201408121115548_Initial.Designer.cs">
@@ -82,6 +86,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408121115548_Initial.resx">
       <DependentUpon>201408121115548_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408171515586_AddedFarmFeatures.resx">
+      <DependentUpon>201408171515586_AddedFarmFeatures.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

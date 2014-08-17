@@ -19,13 +19,24 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Web.Http.Dispatcher;
 
 namespace Applified.Core.Extensibility.Common
 {
-    public abstract class WebapiPluginAssemblyResolver : IAssembliesResolver
+    public class WebapiPluginAssemblyResolver : IAssembliesResolver
     {
-        public abstract ICollection<Assembly> GetAssemblies();
+        private readonly ICollection<Assembly> _assemblies; 
+
+        public WebapiPluginAssemblyResolver(Assembly assembly)
+        {
+            _assemblies = new Collection<Assembly>();
+        }
+
+        public ICollection<Assembly> GetAssemblies()
+        {
+            return _assemblies;
+        }
     }
 }

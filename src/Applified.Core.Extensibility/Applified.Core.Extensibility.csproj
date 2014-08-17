@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DebugHttpControllerSelector.cs" />
     <Compile Include="Common\WebapiPluginAssemblyResolver.cs" />
     <Compile Include="ConfigurationModel.cs" />
     <Compile Include="Contracts\AbstractNotificationSubscriber.cs" />

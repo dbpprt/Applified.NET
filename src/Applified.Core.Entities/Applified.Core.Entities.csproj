@@ -51,19 +51,11 @@
   <ItemGroup>
     <Compile Include="Contracts\IApplicationDependant.cs" />
     <Compile Include="Contracts\IGuidKey.cs" />
-    <Compile Include="Identity\ExternalOAuthProvider.cs" />
-    <Compile Include="Identity\OAuthApplicationType.cs" />
-    <Compile Include="Identity\OAuthClient.cs" />
-    <Compile Include="Identity\OAuthGrant.cs" />
-    <Compile Include="Identity\RefreshToken.cs" />
-    <Compile Include="Identity\Role.cs" />
-    <Compile Include="Identity\UserAccount.cs" />
-    <Compile Include="Identity\UserAccountRoleMapping.cs" />
-    <Compile Include="Identity\UserClaim.cs" />
-    <Compile Include="Identity\UserLogin.cs" />
+    <Compile Include="Infrastructure\ActiveFarmFeature.cs" />
     <Compile Include="Infrastructure\Application.cs" />
     <Compile Include="Infrastructure\ApplicationTemplate.cs" />
     <Compile Include="Infrastructure\Binding.cs" />
+    <Compile Include="Infrastructure\FeatureScope.cs" />
     <Compile Include="Infrastructure\FeatureType.cs" />
     <Compile Include="Infrastructure\Deployment.cs" />
     <Compile Include="Infrastructure\Feature.cs" />

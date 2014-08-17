@@ -18,9 +18,9 @@ properties {
 
 Framework "4.5.1x64"
 
-#task default -depends CleanUp, Compile
+task default -depends Clean, Compile
 
-task default -depends CleanUp, Version, License, Compile, Zip
+task release -depends Clean, Version, License, Compile, Zip
 
 Task License -Description "Add license header to source files" {
     . "$scripts_dir\license-header.ps1"
@@ -30,9 +30,6 @@ Task License -Description "Add license header to source files" {
 
 Task Zip -Description "Package the output" {
     . "$scripts_dir\zip.ps1"
-    $dest = "$build_dir.zip"
-
-    if (Test-Path($dest)) { rm $dest }
 
     ZipFiles "$build_dir.zip" $build_dir
 }
@@ -44,7 +41,11 @@ Task Version -Description "Version the assemblies" {
 }
 
 
-task CleanUp -Description "Clean the build directory" {
+task Clean -Description "Clean the build directory" {
+	$dest = "$build_dir.zip"
+
+    if (Test-Path($dest)) { rm $dest }
+	
     @($build_dir) | Where-Object { Test-Path $_ } | ForEach-Object {
         Write-Host "Cleaning folder $_..."
         Remove-Item $_ -Recurse -Force -ErrorAction Stop

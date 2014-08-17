@@ -70,6 +70,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Common.Logging", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.Common.Logging.WindowsEventLog", "Applified.Common.Logging.WindowsEventLog\Applified.Common.Logging.WindowsEventLog.csproj", "{958496B1-3F69-46A9-9D14-A6A24A2BAAE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applified.IntegratedFeatures.Identity", "Applified.IntegratedFeatures.Identity\Applified.IntegratedFeatures.Identity.csproj", "{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +170,10 @@ Global
 		{958496B1-3F69-46A9-9D14-A6A24A2BAAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{958496B1-3F69-46A9-9D14-A6A24A2BAAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{958496B1-3F69-46A9-9D14-A6A24A2BAAE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,5 +203,9 @@ Global
 		{C6F73F9E-AF7A-4856-98E0-B2E420ECDB7F} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
 		{A7F3BC03-67D2-4829-9004-1D6A482CD116} = {77E01F60-AD92-4725-A0AF-3ED866DEFFA9}
 		{958496B1-3F69-46A9-9D14-A6A24A2BAAE3} = {77E01F60-AD92-4725-A0AF-3ED866DEFFA9}
+		{7A3DFADA-5E18-46F7-8B90-781C2C5BBE82} = {ACB78EB3-0418-4BEB-9FA7-B70C278FEB40}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

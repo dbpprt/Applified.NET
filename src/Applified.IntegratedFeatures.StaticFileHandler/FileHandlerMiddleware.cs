@@ -79,13 +79,14 @@ namespace Applified.IntegratedFeatures.StaticFileHandler
                     FileSystem = fileSystem
                 });
             }
-
+           
             if (_settings.GetValue<bool>(Settings.EnableDefaultFiles))
             {
                 middleware = new DefaultFilesMiddlewareWrapper(middleware, new DefaultFilesOptions
                 {
                     DefaultFileNames = _settings.GetValue<string>(Settings.DefaultFiles).Split(';'),
-                    RequestPath = requestPath
+                    RequestPath = requestPath,
+                    FileSystem = fileSystem
                 });
             }
 
